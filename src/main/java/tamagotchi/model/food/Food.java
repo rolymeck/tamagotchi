@@ -1,5 +1,4 @@
 package tamagotchi.model.food;
 
-public class AbstractFood {
-
+public enum Food {
 }
