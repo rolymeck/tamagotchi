@@ -5,7 +5,6 @@ import org.apache.logging.log4j.Logger;
 import tamagotchi.model.pet.Pet;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 public class World implements Serializable {
 
@@ -13,55 +12,42 @@ public class World implements Serializable {
 
   private final int speed;
   private Pet pet;
+  private Stage stage;
 
-  private LocalDateTime lastFeeding;
-  private LocalDateTime lastCleaning;
+  //private LocalDateTime lastFeeding;
+  //private LocalDateTime lastCleaning;
 
   public World(int speed) {
     this.speed = speed;
+    this.stage = Stage.BIRTH;
     log.debug("World created with speed " + speed);
+  }
+
+  public Stage getStage() {
+    return stage;
   }
 
   public int getSpeed() {
     return speed;
   }
 
-  public Pet getPet() {
-    return pet;
+  //load
+  public void skip() {
+    //deserialization
   }
 
+  // birth stage
   public void setPet(Pet pet) {
+    if (pet == null) {
+      log.error("Method 'setPet' called with pet == null");
+      return;
+    }
     this.pet = pet;
+    this.stage = Stage.LIFE;
   }
 
-  public void cleanUp() {
-    if (pet == null) {
-      log.error("Method 'cleanUp' called with pet == null");
-      return;
-    }
-
-    if (!pet.isAlive()) {
-      log.error("Method 'cleanUp' called with a dead pet");
-      return;
-    }
-
-    setValue(Stat.WASTE, 0);
-  }
-
-  public void feed() {
-    if (pet == null) {
-      log.error("Method 'feed' called with pet == null");
-      return;
-    }
-
-    if (!pet.isAlive()) {
-      log.error("Method 'feed' called with a dead pet");
-      return;
-    }
-
-    decrementValue(Stat.HUNGER, 50);
-  }
-
+  // life stage - work with pet stats
+  // 2nd level of abstraction
   public void update() {
 
     if (pet == null) {
@@ -78,6 +64,7 @@ public class World implements Serializable {
 
     if (happinessIsMin) {
       this.pet.setAlive(false);
+      this.stage = Stage.DEATH;
       return;
     }
 
@@ -97,6 +84,35 @@ public class World implements Serializable {
     }
   }
 
+  public void feed() {
+    if (pet == null) {
+      log.error("Method 'feed' called with pet == null");
+      return;
+    }
+
+    if (!pet.isAlive()) {
+      log.error("Method 'feed' called with a dead pet");
+      return;
+    }
+
+    decrementValue(Stat.HUNGER, 50);
+  }
+
+  public void cleanUp() {
+    if (pet == null) {
+      log.error("Method 'cleanUp' called with pet == null");
+      return;
+    }
+
+    if (!pet.isAlive()) {
+      log.error("Method 'cleanUp' called with a dead pet");
+      return;
+    }
+
+    setValue(Stat.WASTE, 0);
+  }
+
+  // 1st level of abstraction
   private void incrementValue(Stat stat, final double amount) {
     final double maxValue = stat.getMax();
     final double oldValue = getValue(stat);
@@ -159,5 +175,10 @@ public class World implements Serializable {
     }
   }
 
+  // death stage
+  public void wipe() {
+    this.pet = null;
+    this.stage = Stage.BIRTH;
+  }
 
 }

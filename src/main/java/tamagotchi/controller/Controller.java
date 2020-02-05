@@ -3,9 +3,9 @@ package tamagotchi.controller;
 import tamagotchi.model.world.World;
 import tamagotchi.view.View;
 
-public class Controller {
-  private final World world;
-  View view;
+public abstract class Controller {
+  protected final World world;
+  protected View view;
 
   public Controller(final World world) {
     this.world = world;
@@ -18,4 +18,6 @@ public class Controller {
   public View getView() {
     return view;
   }
+
+  public abstract void start();
 }

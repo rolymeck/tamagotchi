@@ -1,5 +1,7 @@
 package tamagotchi.model.pet;
 
+import tamagotchi.model.food.Food;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -7,6 +9,7 @@ public abstract class Pet implements Serializable {
   private final LocalDateTime birthday;
   private final String name;
 
+  protected Food food;
   private double happiness;
   private double hunger;
   private double waste;

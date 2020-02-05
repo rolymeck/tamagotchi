@@ -1,6 +1,6 @@
 *.iml
 .DS_Store
-.idea
-out
+.idea/
+out/
 target
-logs
+logs/
