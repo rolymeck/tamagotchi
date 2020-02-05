@@ -1,0 +1,4 @@
+[02-05 16:03:39,814, 1706] tamagotchi.main.Main Main start
+[02-05 16:03:39,823, 1715] tamagotchi.model.world.World World created with speed 10
+[02-05 16:03:39,823, 1715] tamagotchi.model.world.World Method 'cleanUp' called with pet == null
+[02-05 16:03:39,823, 1715] tamagotchi.model.world.World Method 'feed' called with pet == null
