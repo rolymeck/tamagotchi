@@ -8,5 +8,9 @@
     <artifactId>tamagotchi</artifactId>
     <version>0.1</version>
 
+    <properties>
+        <maven.compiler.source>13</maven.compiler.source>
+        <maven.compiler.target>13</maven.compiler.target>
+    </properties>
 
 </project>
