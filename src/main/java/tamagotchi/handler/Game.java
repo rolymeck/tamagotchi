@@ -3,6 +3,8 @@ package tamagotchi.handler;
 import tamagotchi.controller.MouseManager;
 import tamagotchi.display.Display;
 import tamagotchi.gfx.Assets;
+import tamagotchi.states.SelectionState;
+import tamagotchi.states.State;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -12,13 +14,14 @@ public class Game implements Runnable {
   public String title;
   //States
   public State gameState;
-  public State menuState;
+  public State selectionState;
   private Display display;
   private int width, height;
   private boolean running = false;
   private Thread thread;
   private BufferStrategy bs;
   private Graphics g;
+
   //Input
   private MouseManager mouseManager;
 
@@ -45,8 +48,8 @@ public class Game implements Runnable {
     handler = new Handler(this);
 
     //gameState = new GameState(handler);
-    //menuState = new MenuState(handler);
-    //State.setState(menuState);
+    selectionState = new SelectionState(handler);
+    State.setState(selectionState);
   }
 
   private void tick() {
@@ -80,6 +83,7 @@ public class Game implements Runnable {
     init();
 
     int fps = 60;
+    //noinspection IntegerDivisionInFloatingPointContext
     double timePerTick = 1_000_000_000 / fps;
     double delta = 0;
     long now;

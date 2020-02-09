@@ -94,6 +94,13 @@ public class Assets {
     greenPetL_right[0] = pets.crop(WIDTH_UNIT * 2, HEIGHT_UNIT * 3, WIDTH_UNIT, HEIGHT_UNIT);
     greenPetL_right[1] = pets.crop(WIDTH_UNIT * 2, HEIGHT_UNIT * 4, WIDTH_UNIT, HEIGHT_UNIT);
 
+    redPetS_left = new BufferedImage[2];
+    redPetS_right = new BufferedImage[2];
+    redPetM_left = new BufferedImage[2];
+    redPetM_right = new BufferedImage[2];
+    redPetL_left = new BufferedImage[2];
+    redPetL_right = new BufferedImage[2];
+
     redPetS_left[0] = pets.crop(WIDTH_UNIT * 3, HEIGHT_UNIT, WIDTH_UNIT, HEIGHT_UNIT);
     redPetS_left[1] = pets.crop(WIDTH_UNIT * 3, HEIGHT_UNIT * 2, WIDTH_UNIT, HEIGHT_UNIT);
     redPetS_right[0] = pets.crop(WIDTH_UNIT * 3, HEIGHT_UNIT * 3, WIDTH_UNIT, HEIGHT_UNIT);
@@ -106,6 +113,13 @@ public class Assets {
     redPetL_left[1] = pets.crop(WIDTH_UNIT * 5, HEIGHT_UNIT * 2, WIDTH_UNIT, HEIGHT_UNIT);
     redPetL_right[0] = pets.crop(WIDTH_UNIT * 5, HEIGHT_UNIT * 3, WIDTH_UNIT, HEIGHT_UNIT);
     redPetL_right[1] = pets.crop(WIDTH_UNIT * 5, HEIGHT_UNIT * 4, WIDTH_UNIT, HEIGHT_UNIT);
+
+    bluePetS_left = new BufferedImage[2];
+    bluePetS_right = new BufferedImage[2];
+    bluePetM_left = new BufferedImage[2];
+    bluePetM_right = new BufferedImage[2];
+    bluePetL_left = new BufferedImage[2];
+    bluePetL_right = new BufferedImage[2];
 
     bluePetS_left[0] = pets.crop(WIDTH_UNIT * 6, HEIGHT_UNIT, WIDTH_UNIT, HEIGHT_UNIT);
     bluePetS_left[1] = pets.crop(WIDTH_UNIT * 6, HEIGHT_UNIT * 2, WIDTH_UNIT, HEIGHT_UNIT);
