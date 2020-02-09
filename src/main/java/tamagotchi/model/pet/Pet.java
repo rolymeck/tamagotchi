@@ -1,35 +1,72 @@
 package tamagotchi.model.pet;
 
-import tamagotchi.model.food.Food;
+import tamagotchi.gfx.Animation;
+import tamagotchi.handler.Handler;
+import tamagotchi.handler.Stat;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 public abstract class Pet implements Serializable {
-  private final LocalDateTime birthday;
-  private final String name;
+  public static final int Y = 0;
+  public static final int X = 0;
+  public static final int DEFAULT_WIDTH = 32;
+  public static final int DEFAULT_HEIGHT = 32;
 
-  protected Food food;
-  private double happiness;
-  private double hunger;
-  private double waste;
-  private boolean alive;
+  protected Handler handler;
 
-  public Pet(final String name) {
-    this.name = name;
-    this.happiness = 100.0d;
-    this.hunger = 0.0d;
-    this.waste = 0.0d;
+  protected final long birthday;
+  protected boolean alive;
+
+  protected double happiness;
+  protected double hunger;
+  protected double waste;
+
+  protected float x;
+  protected int width, height;
+
+  protected Animation animFront;
+  protected Animation animLeft;
+  protected Animation animRight;
+
+  protected Pet(Handler handler) {
+    this.handler = handler;
+
+    //tmp
+    this.x = X;
+    this.width = DEFAULT_WIDTH;
+    this.height = DEFAULT_HEIGHT;
+
+    this.happiness = Stat.HAPPINESS.getMax();
+    this.hunger = Stat.HUNGER.getMin();
+    this.waste = Stat.WASTE.getMin();
     this.alive = true;
-    this.birthday = LocalDateTime.now();
+    this.birthday = System.currentTimeMillis();
   }
 
-  public LocalDateTime getBirthday() {
+  public void tick() {
+    animFront.tick();
+    animRight.tick();
+    animLeft.tick();
+    move();
+
+  }
+
+  public void move() {};
+
+  public void render(Graphics g) {
+    g.drawImage(getCurrentAnimationFrame(), (int) (x), Y, width, height, null);
+  }
+
+  private BufferedImage getCurrentAnimationFrame(){
+    return animFront.getCurrentFrame();
+  }
+
+  // GETTERS SETTERS
+
+  public long getBirthday() {
     return birthday;
-  }
-
-  public String getName() {
-    return name;
   }
 
   public double getHappiness() {

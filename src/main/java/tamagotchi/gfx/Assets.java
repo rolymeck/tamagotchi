@@ -15,6 +15,8 @@ public class Assets {
 
   public static BufferedImage[] btn_feed, btn_clean, btn_play, btn_new;
 
+  public static BufferedImage[] happinessBar, hungerBar, wasteBar;
+
   public static BufferedImage greenPetS_front, greenPetM_front, greenPetL_front;
   public static BufferedImage redPetS_front, redPetM_front, redPetL_front;
   public static BufferedImage bluePetS_front, bluePetM_front, bluePetL_front;
@@ -32,9 +34,12 @@ public class Assets {
   public static void init() {
     font26 = FontLoader.loadFont("res/fonts/KenneyMS.ttf", 26);
 
-    SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/textures/sheet.png"));
-    SpriteSheet pets = new SpriteSheet(ImageLoader.loadImage("/textures/pets.png"));
-    SpriteSheet selTiles = new SpriteSheet(ImageLoader.loadImage("/textures/selectionTiles.png"));
+    SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/textures/Sheet.png"));
+    SpriteSheet pets = new SpriteSheet(ImageLoader.loadImage("/textures/Pets.png"));
+    SpriteSheet selTiles = new SpriteSheet(ImageLoader.loadImage("/textures/SelectionTiles.png"));
+    SpriteSheet happinessBarSheet = new SpriteSheet(ImageLoader.loadImage("/textures/HappinessBar.png"));
+    SpriteSheet hungerBarSheet = new SpriteSheet(ImageLoader.loadImage("/textures/HungerBar.png"));
+    SpriteSheet wasteBarSheet = new SpriteSheet(ImageLoader.loadImage("/textures/WasteBar.png"));
 
     mainScreen = ImageLoader.loadImage("/textures/mainScreen.png");
     selectionScreen = ImageLoader.loadImage("/textures/selectionScreen.png");
@@ -63,6 +68,16 @@ public class Assets {
     btn_play[1] = sheet.crop(WIDTH_UNIT * 3, HEIGHT_UNIT * 5, BTN_WIDTH, BTN_HEIGHT);
     btn_new[0] = sheet.crop(0, HEIGHT_UNIT * 7, BTN_WIDTH, BTN_HEIGHT);
     btn_new[1] = sheet.crop(WIDTH_UNIT * 3, HEIGHT_UNIT * 7, BTN_WIDTH, BTN_HEIGHT);
+
+    happinessBar = new BufferedImage[11];
+    hungerBar = new BufferedImage[11];
+    wasteBar = new BufferedImage[11];
+
+    for (int i = 0; i < 11; i++) {
+      happinessBar[i] = happinessBarSheet.crop(i * 10, 0, 10, 22);
+      hungerBar[i] = hungerBarSheet.crop(i * 10, 0, 10, 22);
+      wasteBar[i] = wasteBarSheet.crop(i * 10, 0, 10, 22);
+    }
 
     greenPetS_front = pets.crop(0, 0, WIDTH_UNIT, HEIGHT_UNIT);
     greenPetM_front = pets.crop(WIDTH_UNIT, 0, WIDTH_UNIT, HEIGHT_UNIT);

@@ -18,9 +18,9 @@ public class World implements Serializable {
   //private LocalDateTime lastFeeding;
   //private LocalDateTime lastCleaning;
 
-  public World(int period, Handler handler) {
-    this.period = period;
+  public World(Handler handler, int period) {
     this.handler = handler;
+    this.period = period;
     log.debug("World created with period " + period);
   }
 
@@ -42,7 +42,7 @@ public class World implements Serializable {
   // 2nd level of abstraction
   public void tick() {
 
-    if (pet == null) {
+   /* if (pet == null) {
       log.error("Method 'update' called with pet == null");
       return;
     }
@@ -72,7 +72,7 @@ public class World implements Serializable {
       decrementValue(Stat.HAPPINESS, 1);
     } else {
       incrementValue(Stat.WASTE, 1);
-    }
+    }*/
   }
 
   public void feed() {
@@ -105,6 +105,7 @@ public class World implements Serializable {
 
   public void render(Graphics g) {
 
+
   }
 
   // 1st level of abstraction
@@ -124,7 +125,7 @@ public class World implements Serializable {
     setValue(stat, newValue);
   }
 
-  private double getValue(Stat stat) {
+  public double getValue(Stat stat) {
     if (pet == null) {
       log.error("Method 'getValue' called with pet == null");
       throw new RuntimeException("Method 'getValue' called with pet == null");

@@ -10,8 +10,9 @@ public abstract class State {
 
 	private static State currentState = null;
 	
-	public static void setState(State state){
+	public static void setState(State state, Handler handler){
 		currentState = state;
+		handler.setUI(state.uiManager);
 	}
 	
 	public static State getState(){

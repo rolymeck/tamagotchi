@@ -51,8 +51,7 @@ public class Game implements Runnable {
     gameState = new GameState(handler);
     selectionState = new SelectionState(handler);
 
-    handler.setUI(selectionState.getUiManager());
-    State.setState(selectionState);
+    State.setState(selectionState, handler);
 
   }
 
