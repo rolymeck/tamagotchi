@@ -1,0 +1,123 @@
+package tamagotchi.gfx;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+
+public class Assets {
+
+  private static final int WIDTH_UNIT = 32, HEIGHT_UNIT = 32, BTN_WIDTH = 96, BTN_HEIGHT = 48;
+
+  public static Font font26;
+
+  public static BufferedImage mainScreen, selectionScreen;
+  public static BufferedImage greenPetSelectionTile, redPetSelectionTile, bluePetSelectionTile;
+  public static BufferedImage egg, grave, greenPetFood, redPetFood, bluePetFood, poop;
+
+  public static BufferedImage[] btn_feed, btn_clean, btn_play, btn_new;
+
+  public static BufferedImage greenPetS_front, greenPetM_front, greenPetL_front;
+  public static BufferedImage redPetS_front, redPetM_front, redPetL_front;
+  public static BufferedImage bluePetS_front, bluePetM_front, bluePetL_front;
+
+  public static BufferedImage[] greenPetS_left, greenPetS_right;
+  public static BufferedImage[] greenPetM_left, greenPetM_right;
+  public static BufferedImage[] greenPetL_left, greenPetL_right;
+  public static BufferedImage[] redPetS_left, redPetS_right;
+  public static BufferedImage[] redPetM_left, redPetM_right;
+  public static BufferedImage[] redPetL_left, redPetL_right;
+  public static BufferedImage[] bluePetS_left, bluePetS_right;
+  public static BufferedImage[] bluePetM_left, bluePetM_right;
+  public static BufferedImage[] bluePetL_left, bluePetL_right;
+
+  public static void init() {
+    font26 = FontLoader.loadFont("res/fonts/KenneyMS.ttf", 26);
+
+    SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/textures/sheet.png"));
+    SpriteSheet pets = new SpriteSheet(ImageLoader.loadImage("/textures/pets.png"));
+    SpriteSheet selTiles = new SpriteSheet(ImageLoader.loadImage("/textures/selectionTiles.png"));
+
+    mainScreen = ImageLoader.loadImage("/textures/mainScreen.png");
+    selectionScreen = ImageLoader.loadImage("/textures/selectionScreen.png");
+
+    greenPetSelectionTile = selTiles.crop(0, 0, WIDTH_UNIT * 4, HEIGHT_UNIT * 6);
+    redPetSelectionTile = selTiles.crop(WIDTH_UNIT * 4, 0, WIDTH_UNIT * 4, HEIGHT_UNIT * 6);
+    bluePetSelectionTile = selTiles.crop(WIDTH_UNIT * 8, 0, WIDTH_UNIT * 4, HEIGHT_UNIT * 6);
+
+    egg = sheet.crop(0, 0, WIDTH_UNIT, HEIGHT_UNIT);
+    grave = sheet.crop(WIDTH_UNIT, 0, WIDTH_UNIT, HEIGHT_UNIT);
+    redPetFood = sheet.crop(WIDTH_UNIT * 2, 0, WIDTH_UNIT, HEIGHT_UNIT);
+    greenPetFood = sheet.crop(WIDTH_UNIT * 3, 0, WIDTH_UNIT, HEIGHT_UNIT);
+    bluePetFood = sheet.crop(WIDTH_UNIT * 4, 0, WIDTH_UNIT, HEIGHT_UNIT);
+    poop = sheet.crop(WIDTH_UNIT * 5, 0, WIDTH_UNIT, HEIGHT_UNIT);
+
+    btn_feed = new BufferedImage[2];
+    btn_clean = new BufferedImage[2];
+    btn_play = new BufferedImage[2];
+    btn_new = new BufferedImage[2];
+
+    btn_feed[0] = sheet.crop(0, HEIGHT_UNIT, BTN_WIDTH, BTN_HEIGHT);
+    btn_feed[1] = sheet.crop(WIDTH_UNIT * 3, HEIGHT_UNIT, BTN_WIDTH, BTN_HEIGHT);
+    btn_clean[0] = sheet.crop(0, HEIGHT_UNIT * 3, BTN_WIDTH, BTN_HEIGHT);
+    btn_clean[1] = sheet.crop(WIDTH_UNIT * 3, HEIGHT_UNIT * 3, BTN_WIDTH, BTN_HEIGHT);
+    btn_play[0] = sheet.crop(0, HEIGHT_UNIT * 5, BTN_WIDTH, BTN_HEIGHT);
+    btn_play[1] = sheet.crop(WIDTH_UNIT * 3, HEIGHT_UNIT * 5, BTN_WIDTH, BTN_HEIGHT);
+    btn_new[0] = sheet.crop(0, HEIGHT_UNIT * 7, BTN_WIDTH, BTN_HEIGHT);
+    btn_new[1] = sheet.crop(WIDTH_UNIT * 3, HEIGHT_UNIT * 7, BTN_WIDTH, BTN_HEIGHT);
+
+    greenPetS_front = pets.crop(0, 0, WIDTH_UNIT, HEIGHT_UNIT);
+    greenPetM_front = pets.crop(WIDTH_UNIT, 0, WIDTH_UNIT, HEIGHT_UNIT);
+    greenPetL_front = pets.crop(WIDTH_UNIT * 2, 0, WIDTH_UNIT, HEIGHT_UNIT);
+    redPetS_front = pets.crop(WIDTH_UNIT * 3, 0, WIDTH_UNIT, HEIGHT_UNIT);
+    redPetM_front = pets.crop(WIDTH_UNIT * 4, 0, WIDTH_UNIT, HEIGHT_UNIT);
+    redPetL_front = pets.crop(WIDTH_UNIT * 5, 0, WIDTH_UNIT, HEIGHT_UNIT);
+    bluePetS_front = pets.crop(WIDTH_UNIT * 6, 0, WIDTH_UNIT, HEIGHT_UNIT);
+    bluePetM_front = pets.crop(WIDTH_UNIT * 7, 0, WIDTH_UNIT, HEIGHT_UNIT);
+    bluePetL_front = pets.crop(WIDTH_UNIT * 8, 0, WIDTH_UNIT, HEIGHT_UNIT);
+
+    greenPetS_left = new BufferedImage[2];
+    greenPetS_right = new BufferedImage[2];
+    greenPetM_left = new BufferedImage[2];
+    greenPetM_right = new BufferedImage[2];
+    greenPetL_left = new BufferedImage[2];
+    greenPetL_right = new BufferedImage[2];
+
+    greenPetS_left[0] = pets.crop(0, HEIGHT_UNIT, WIDTH_UNIT, HEIGHT_UNIT);
+    greenPetS_left[1] = pets.crop(0, HEIGHT_UNIT * 2, WIDTH_UNIT, HEIGHT_UNIT);
+    greenPetS_right[0] = pets.crop(0, HEIGHT_UNIT * 3, WIDTH_UNIT, HEIGHT_UNIT);
+    greenPetS_right[1] = pets.crop(0, HEIGHT_UNIT * 4, WIDTH_UNIT, HEIGHT_UNIT);
+    greenPetM_left[0] = pets.crop(WIDTH_UNIT, HEIGHT_UNIT, WIDTH_UNIT, HEIGHT_UNIT);
+    greenPetM_left[1] = pets.crop(WIDTH_UNIT, HEIGHT_UNIT * 2, WIDTH_UNIT, HEIGHT_UNIT);
+    greenPetM_right[0] = pets.crop(WIDTH_UNIT, HEIGHT_UNIT * 3, WIDTH_UNIT, HEIGHT_UNIT);
+    greenPetM_right[1] = pets.crop(WIDTH_UNIT, HEIGHT_UNIT * 4, WIDTH_UNIT, HEIGHT_UNIT);
+    greenPetL_left[0] = pets.crop(WIDTH_UNIT * 2, HEIGHT_UNIT, WIDTH_UNIT, HEIGHT_UNIT);
+    greenPetL_left[1] = pets.crop(WIDTH_UNIT * 2, HEIGHT_UNIT * 2, WIDTH_UNIT, HEIGHT_UNIT);
+    greenPetL_right[0] = pets.crop(WIDTH_UNIT * 2, HEIGHT_UNIT * 3, WIDTH_UNIT, HEIGHT_UNIT);
+    greenPetL_right[1] = pets.crop(WIDTH_UNIT * 2, HEIGHT_UNIT * 4, WIDTH_UNIT, HEIGHT_UNIT);
+
+    redPetS_left[0] = pets.crop(WIDTH_UNIT * 3, HEIGHT_UNIT, WIDTH_UNIT, HEIGHT_UNIT);
+    redPetS_left[1] = pets.crop(WIDTH_UNIT * 3, HEIGHT_UNIT * 2, WIDTH_UNIT, HEIGHT_UNIT);
+    redPetS_right[0] = pets.crop(WIDTH_UNIT * 3, HEIGHT_UNIT * 3, WIDTH_UNIT, HEIGHT_UNIT);
+    redPetS_right[1] = pets.crop(WIDTH_UNIT * 3, HEIGHT_UNIT * 4, WIDTH_UNIT, HEIGHT_UNIT);
+    redPetM_left[0] = pets.crop(WIDTH_UNIT * 4, HEIGHT_UNIT, WIDTH_UNIT, HEIGHT_UNIT);
+    redPetM_left[1] = pets.crop(WIDTH_UNIT * 4, HEIGHT_UNIT * 2, WIDTH_UNIT, HEIGHT_UNIT);
+    redPetM_right[0] = pets.crop(WIDTH_UNIT * 4, HEIGHT_UNIT * 3, WIDTH_UNIT, HEIGHT_UNIT);
+    redPetM_right[1] = pets.crop(WIDTH_UNIT * 4, HEIGHT_UNIT * 4, WIDTH_UNIT, HEIGHT_UNIT);
+    redPetL_left[0] = pets.crop(WIDTH_UNIT * 5, HEIGHT_UNIT, WIDTH_UNIT, HEIGHT_UNIT);
+    redPetL_left[1] = pets.crop(WIDTH_UNIT * 5, HEIGHT_UNIT * 2, WIDTH_UNIT, HEIGHT_UNIT);
+    redPetL_right[0] = pets.crop(WIDTH_UNIT * 5, HEIGHT_UNIT * 3, WIDTH_UNIT, HEIGHT_UNIT);
+    redPetL_right[1] = pets.crop(WIDTH_UNIT * 5, HEIGHT_UNIT * 4, WIDTH_UNIT, HEIGHT_UNIT);
+
+    bluePetS_left[0] = pets.crop(WIDTH_UNIT * 6, HEIGHT_UNIT, WIDTH_UNIT, HEIGHT_UNIT);
+    bluePetS_left[1] = pets.crop(WIDTH_UNIT * 6, HEIGHT_UNIT * 2, WIDTH_UNIT, HEIGHT_UNIT);
+    bluePetS_right[0] = pets.crop(WIDTH_UNIT * 6, HEIGHT_UNIT * 3, WIDTH_UNIT, HEIGHT_UNIT);
+    bluePetS_right[1] = pets.crop(WIDTH_UNIT * 6, HEIGHT_UNIT * 4, WIDTH_UNIT, HEIGHT_UNIT);
+    bluePetM_left[0] = pets.crop(WIDTH_UNIT * 7, HEIGHT_UNIT, WIDTH_UNIT, HEIGHT_UNIT);
+    bluePetM_left[1] = pets.crop(WIDTH_UNIT * 7, HEIGHT_UNIT * 2, WIDTH_UNIT, HEIGHT_UNIT);
+    bluePetM_right[0] = pets.crop(WIDTH_UNIT * 7, HEIGHT_UNIT * 3, WIDTH_UNIT, HEIGHT_UNIT);
+    bluePetM_right[1] = pets.crop(WIDTH_UNIT * 7, HEIGHT_UNIT * 4, WIDTH_UNIT, HEIGHT_UNIT);
+    bluePetL_left[0] = pets.crop(WIDTH_UNIT * 8, HEIGHT_UNIT, WIDTH_UNIT, HEIGHT_UNIT);
+    bluePetL_left[1] = pets.crop(WIDTH_UNIT * 8, HEIGHT_UNIT * 2, WIDTH_UNIT, HEIGHT_UNIT);
+    bluePetL_right[0] = pets.crop(WIDTH_UNIT * 8, HEIGHT_UNIT * 3, WIDTH_UNIT, HEIGHT_UNIT);
+    bluePetL_right[1] = pets.crop(WIDTH_UNIT * 8, HEIGHT_UNIT * 4, WIDTH_UNIT, HEIGHT_UNIT);
+  }
+}

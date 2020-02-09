@@ -1,8 +1,10 @@
-package tamagotchi.model.world;
+package tamagotchi.handler;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tamagotchi.model.pet.Pet;
+import tamagotchi.model.world.Stage;
+import tamagotchi.model.world.Stat;
 
 import java.io.Serializable;
 
