@@ -1,6 +1,7 @@
 package tamagotchi.states;
 
 import tamagotchi.handler.Handler;
+import tamagotchi.ui.UIManager;
 
 import java.awt.*;
 
@@ -20,13 +21,20 @@ public abstract class State {
 	//CLASS
 	
 	protected Handler handler;
+
+	protected UIManager uiManager;
 	
 	public State(Handler handler){
 		this.handler = handler;
+		uiManager = new UIManager(handler);
 	}
 	
 	public abstract void tick();
 	
 	public abstract void render(Graphics g);
+
+	public UIManager getUiManager() {
+		return uiManager;
+	}
 	
 }

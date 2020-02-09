@@ -3,34 +3,25 @@ package tamagotchi.handler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tamagotchi.model.pet.Pet;
-import tamagotchi.model.world.Stage;
-import tamagotchi.model.world.Stat;
 
+import java.awt.*;
 import java.io.Serializable;
 
 public class World implements Serializable {
 
   private static transient final Logger log = LogManager.getLogger(World.class);
 
-  private final int speed;
+  private final int period;
   private Pet pet;
-  private Stage stage;
+  private Handler handler;
 
   //private LocalDateTime lastFeeding;
   //private LocalDateTime lastCleaning;
 
-  public World(int speed) {
-    this.speed = speed;
-    this.stage = Stage.BIRTH;
-    log.debug("World created with speed " + speed);
-  }
-
-  public Stage getStage() {
-    return stage;
-  }
-
-  public int getSpeed() {
-    return speed;
+  public World(int period, Handler handler) {
+    this.period = period;
+    this.handler = handler;
+    log.debug("World created with period " + period);
   }
 
   //load
@@ -45,12 +36,11 @@ public class World implements Serializable {
       return;
     }
     this.pet = pet;
-    this.stage = Stage.LIFE;
   }
 
   // life stage - work with pet stats
   // 2nd level of abstraction
-  public void update() {
+  public void tick() {
 
     if (pet == null) {
       log.error("Method 'update' called with pet == null");
@@ -66,7 +56,6 @@ public class World implements Serializable {
 
     if (happinessIsMin) {
       this.pet.setAlive(false);
-      this.stage = Stage.DEATH;
       return;
     }
 
@@ -112,6 +101,10 @@ public class World implements Serializable {
     }
 
     setValue(Stat.WASTE, 0);
+  }
+
+  public void render(Graphics g) {
+
   }
 
   // 1st level of abstraction
@@ -179,8 +172,22 @@ public class World implements Serializable {
 
   // death stage
   public void wipe() {
-    this.pet = null;
-    this.stage = Stage.BIRTH;
+  }
+
+
+  // GETTERS SETTERS
+
+  public Handler getHandler() {
+    return handler;
+  }
+
+  public void setHandler(Handler handler) {
+    this.handler = handler;
+  }
+
+
+  public int getPeriod() {
+    return period;
   }
 
 }

@@ -1,6 +1,7 @@
 package tamagotchi.handler;
 
 import tamagotchi.controller.MouseManager;
+import tamagotchi.ui.UIManager;
 
 public class Handler {
 
@@ -13,6 +14,10 @@ public class Handler {
 
   public MouseManager getMouseManager() {
     return game.getMouseManager();
+  }
+
+  public void setUI(UIManager uiManager) {
+    game.getMouseManager().setUIManager(uiManager);
   }
 
   public int getWidth() {

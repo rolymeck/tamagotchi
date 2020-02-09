@@ -3,7 +3,6 @@ package tamagotchi.states;
 import tamagotchi.gfx.Assets;
 import tamagotchi.handler.Handler;
 import tamagotchi.ui.UIImageButton;
-import tamagotchi.ui.UIManager;
 import tamagotchi.ui.UIObject;
 import tamagotchi.ui.UIStaticScreen;
 
@@ -11,12 +10,9 @@ import java.awt.*;
 
 public class SelectionState extends State {
 
-  private UIManager uiManager;
 
   public SelectionState(Handler handler) {
     super(handler);
-    uiManager = new UIManager(handler);
-    handler.getMouseManager().setUIManager(uiManager);
 
     UIObject screen = new UIStaticScreen(0, 0, 480, 480,
         Assets.selectionScreen);
@@ -24,7 +20,7 @@ public class SelectionState extends State {
     UIObject green = new UIImageButton(32, 128, 128, 192,
         Assets.greenPetSelectionTile,
         () -> {
-          //handler.getMouseManager().setUIManager(null);
+          handler.setUI(handler.getGame().gameState.uiManager);
           //State.setState(handler.getGame().gameState);
         });
 

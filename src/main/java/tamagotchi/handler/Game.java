@@ -3,6 +3,7 @@ package tamagotchi.handler;
 import tamagotchi.controller.MouseManager;
 import tamagotchi.display.Display;
 import tamagotchi.gfx.Assets;
+import tamagotchi.states.GameState;
 import tamagotchi.states.SelectionState;
 import tamagotchi.states.State;
 
@@ -47,16 +48,17 @@ public class Game implements Runnable {
 
     handler = new Handler(this);
 
-    //gameState = new GameState(handler);
+    gameState = new GameState(handler);
     selectionState = new SelectionState(handler);
+
+    handler.setUI(selectionState.getUiManager());
     State.setState(selectionState);
+
   }
 
   private void tick() {
-    /*keyManager.tick();
-
     if (State.getState() != null)
-      State.getState().tick();*/
+      State.getState().tick();
   }
 
   private void render() {
@@ -83,6 +85,7 @@ public class Game implements Runnable {
     init();
 
     int fps = 60;
+
     //noinspection IntegerDivisionInFloatingPointContext
     double timePerTick = 1_000_000_000 / fps;
     double delta = 0;
@@ -90,8 +93,10 @@ public class Game implements Runnable {
     long lastTime = System.nanoTime();
     long timer = 0;
     int ticks = 0;
+    int hz = 0;
 
     while (running) {
+      hz++;
       now = System.nanoTime();
       delta += (now - lastTime) / timePerTick;
       timer += now - lastTime;
@@ -104,10 +109,12 @@ public class Game implements Runnable {
         delta--;
       }
 
-      if (timer >= 1000000000) {
-        System.out.println("Ticks and Frames: " + ticks);
+      if (timer >= 1_000_000_000) {
+        double MHz = Math.rint(100.0 * hz / 1_000_000f) / 100.0;
+        System.out.println("FPS: " + ticks + " MHz: " + MHz);
         ticks = 0;
         timer = 0;
+        hz = 0;
       }
     }
 
