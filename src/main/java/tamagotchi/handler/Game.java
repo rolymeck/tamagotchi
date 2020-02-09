@@ -12,6 +12,8 @@ import java.awt.image.BufferStrategy;
 
 public class Game implements Runnable {
 
+  public static final int FPS = 60;
+
   public String title;
   //States
   public State gameState;
@@ -83,10 +85,8 @@ public class Game implements Runnable {
 
     init();
 
-    int fps = 60;
-
     //noinspection IntegerDivisionInFloatingPointContext
-    double timePerTick = 1_000_000_000 / fps;
+    double timePerTick = 1_000_000_000 / FPS;
     double delta = 0;
     long now;
     long lastTime = System.nanoTime();

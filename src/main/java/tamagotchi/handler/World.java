@@ -15,6 +15,8 @@ public class World implements Serializable {
   private Pet pet;
   private Handler handler;
 
+  private int ticks = 0;
+
   //private LocalDateTime lastFeeding;
   //private LocalDateTime lastCleaning;
 
@@ -42,7 +44,14 @@ public class World implements Serializable {
   // 2nd level of abstraction
   public void tick() {
 
-   /* if (pet == null) {
+    if (ticks < Game.FPS / 5) {
+      ticks++;
+      return;
+    }
+
+    ticks = 0;
+
+    if (pet == null) {
       log.error("Method 'update' called with pet == null");
       return;
     }
@@ -72,7 +81,7 @@ public class World implements Serializable {
       decrementValue(Stat.HAPPINESS, 1);
     } else {
       incrementValue(Stat.WASTE, 1);
-    }*/
+    }
   }
 
   public void feed() {
@@ -104,7 +113,7 @@ public class World implements Serializable {
   }
 
   public void render(Graphics g) {
-
+    pet.render(g);
 
   }
 

@@ -9,10 +9,10 @@ import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
 public abstract class Pet implements Serializable {
-  public static final int Y = 0;
-  public static final int X = 0;
-  public static final int DEFAULT_WIDTH = 32;
-  public static final int DEFAULT_HEIGHT = 32;
+  public static final int Y = 370;
+  public static final int X = 240;
+  public static final int DEFAULT_WIDTH = 64;
+  public static final int DEFAULT_HEIGHT = 64;
 
   protected Handler handler;
 
@@ -56,7 +56,7 @@ public abstract class Pet implements Serializable {
   public void move() {};
 
   public void render(Graphics g) {
-    g.drawImage(getCurrentAnimationFrame(), (int) (x), Y, width, height, null);
+    g.drawImage(getCurrentAnimationFrame(), (int) (x), Y - DEFAULT_HEIGHT, width, height, null);
   }
 
   private BufferedImage getCurrentAnimationFrame(){
