@@ -31,10 +31,13 @@ public class UIBar extends UIObject {
 
   @Override
   public void render(Graphics g) {
-    if (size > 0)
+    if (size > 0) {
       g.drawImage(images[0], (int) x, (int) y, 10, 22, null);
-    for (int i = 1; i < size + 1; i++) {
-      g.drawImage(images[i], (int) x + i * 10, (int) y, 10, 22, null);
+      int i = 1;
+      for (; i < size; i++) {
+        g.drawImage(images[i], (int) x + i * 10, (int) y, 10, 22, null);
+      }
+      g.drawImage(images[images.length - 1], (int) x + i * 10, (int) y, 10, 22, null);
     }
   }
 
