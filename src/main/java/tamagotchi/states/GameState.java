@@ -1,13 +1,16 @@
 package tamagotchi.states;
 
 import tamagotchi.gfx.Assets;
+import tamagotchi.gfx.Text;
 import tamagotchi.handler.Handler;
 import tamagotchi.handler.Stat;
 import tamagotchi.handler.World;
+import tamagotchi.model.food.Food;
 import tamagotchi.ui.UIBar;
 import tamagotchi.ui.UIImageAnimatedButton;
 import tamagotchi.ui.UIObject;
 import tamagotchi.ui.UIStaticScreen;
+import tamagotchi.utils.PointManager;
 
 import java.awt.*;
 
@@ -25,7 +28,17 @@ public class GameState extends State {
     UIObject btn_feed = new UIImageAnimatedButton(48, 410, 96, 48,
         Assets.btn_feed,
         () -> {
-
+          System.out.println("FEED CLICKED");
+          if (world.getFood() != null) {
+            System.out.println("Food is already on the screen");
+            return;
+          }
+          System.out.println("No food on the screen");
+          Food food = world.getPet().getFood();
+          int point = PointManager.getRandomX(handler);
+          System.out.println("Point is " + point);
+          food.setX(point);
+          world.setFood(food);
         });
 
     UIObject btn_clean = new UIImageAnimatedButton(192, 410, 96, 48,
@@ -40,9 +53,9 @@ public class GameState extends State {
 
         });
 
-    UIObject hapBar = new UIBar(105, 53, 110, 22, Assets.happinessBar, world, Stat.HAPPINESS);
-    UIObject hunBar = new UIBar(325, 18, 110, 22, Assets.hungerBar, world, Stat.HUNGER);
-    UIObject wasBar = new UIBar(325, 53, 110, 22, Assets.wasteBar, world, Stat.WASTE);
+    UIObject hapBar = new UIBar(115, 53, 110, 22, Assets.happinessBar, world, Stat.HAPPINESS);
+    UIObject hunBar = new UIBar(335, 18, 110, 22, Assets.hungerBar, world, Stat.HUNGER);
+    UIObject wasBar = new UIBar(335, 53, 110, 22, Assets.wasteBar, world, Stat.WASTE);
 
     uiManager.addObject(mainScreen);
     uiManager.addObject(hapBar);
@@ -55,13 +68,15 @@ public class GameState extends State {
 
   @Override
   public void tick() {
-    world.tick();
     uiManager.tick();
+    world.tick();
   }
 
   @Override
   public void render(Graphics g) {
     uiManager.render(g);
+    Text.drawString(g, String.valueOf((int) world.getPet().getValue(Stat.AGE)), 115,
+        40, Color.BLACK, Assets.font26);
     world.render(g);
   }
 

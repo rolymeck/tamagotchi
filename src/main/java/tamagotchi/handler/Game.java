@@ -111,6 +111,9 @@ public class Game implements Runnable {
       if (timer >= 1_000_000_000) {
         double MHz = Math.rint(100.0 * hz / 1_000_000f) / 100.0;
         System.out.println("FPS: " + ticks + " MHz: " + MHz);
+        if (handler.getWorld().getPet() != null) {
+          System.out.println("AGE: " + handler.getWorld().getPet().getValue(Stat.AGE) + " HPN: " + handler.getWorld().getPet().getValue(Stat.HAPPINESS) + " HNG: " + handler.getWorld().getPet().getValue(Stat.HUNGER) + " WST: " + handler.getWorld().getPet().getValue(Stat.WASTE));
+        }
         ticks = 0;
         timer = 0;
         hz = 0;

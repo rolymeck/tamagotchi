@@ -4,7 +4,8 @@ public enum Stat {
 
   HUNGER(0, 100),
   WASTE(0, 100),
-  HAPPINESS(0, 100);
+  HAPPINESS(0, 100),
+  AGE(0, 100);
 
   private final double min;
   private final double max;

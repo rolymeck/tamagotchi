@@ -22,7 +22,7 @@ public class UIBar extends UIObject {
 
   @Override
   public void tick() {
-    int percent = (int) Math.round(world.getValue(stat));
+    int percent = (int) Math.round(world.getPet().getValue(stat));
     int dozens = percent / 10;
     boolean moreThan5 = (percent % 10) >= 5;
     int additive = moreThan5 ? 1 : 0;

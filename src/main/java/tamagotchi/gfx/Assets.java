@@ -32,7 +32,7 @@ public class Assets {
   public static BufferedImage[] bluePetL_left, bluePetL_right;
 
   public static void init() {
-    font26 = FontLoader.loadFont("res/fonts/KenneyMS.ttf", 26);
+    font26 = FontLoader.loadFont("res/fonts/KenneyMini.ttf", 34);
 
     SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/textures/Sheet.png"));
     SpriteSheet pets = new SpriteSheet(ImageLoader.loadImage("/textures/Pets.png"));
