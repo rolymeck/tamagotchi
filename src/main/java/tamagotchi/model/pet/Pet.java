@@ -7,6 +7,8 @@ import tamagotchi.handler.Handler;
 import tamagotchi.handler.Stat;
 import tamagotchi.handler.World;
 import tamagotchi.model.entities.Food;
+import tamagotchi.utils.PointManager;
+import tamagotchi.utils.Timer;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -18,10 +20,8 @@ public abstract class Pet implements Serializable {
   public static final int DEFAULT_HEIGHT = 64;
 
   public static final int ANIMATION_SPEED = 500;
-
-  protected Handler handler;
-
   protected final long birthday;
+  protected Handler handler;
   protected boolean alive;
   protected int age;
 
@@ -33,7 +33,9 @@ public abstract class Pet implements Serializable {
   protected int width, height;
 
   protected int destination;
+  protected boolean actualDestination;
   protected int xMove;
+  protected Timer moveTimer;
 
   protected Food food;
 
@@ -44,6 +46,7 @@ public abstract class Pet implements Serializable {
 
   protected Pet(Handler handler) {
     this.handler = handler;
+    this.moveTimer = new Timer(2);
 
     //tmp
     this.x = X;
@@ -65,11 +68,28 @@ public abstract class Pet implements Serializable {
     animRight.tick();
     animLeft.tick();
 
+    xMove = 0;
+
     if (handler.getWorld().haveFood()) {
       destination = (int) handler.getWorld().getFood().getX();
+      actualDestination = true;
+      moveTimer.reset();
     }
 
-    xMove = 0;
+    if (moveTimer.isStarted()) {
+      moveTimer.tick();
+    }
+
+    if (!actualDestination && moveTimer.isStarted() && !moveTimer.isFinished()) {
+      return;
+    }
+
+    if (!actualDestination && (!moveTimer.isStarted() || moveTimer.isFinished())) {
+      System.out.println("RANDOM POINT WITHOUT FOOD");
+      destination = PointManager.getRandomX(handler);
+      actualDestination = true;
+      moveTimer.reset();
+    }
 
     if (x != destination) {
       xMove = x > destination ? -1 : 1;
@@ -77,6 +97,13 @@ public abstract class Pet implements Serializable {
 
     if (x == destination && handler.getWorld().haveFood()) {
       feed();
+      actualDestination = false;
+      moveTimer.start();
+    }
+
+    if (x == destination && actualDestination) {
+      moveTimer.start();
+      actualDestination = false;
     }
 
     x += xMove;

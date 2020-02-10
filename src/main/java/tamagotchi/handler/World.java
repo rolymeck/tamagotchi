@@ -14,11 +14,10 @@ import java.io.Serializable;
 
 public class World implements Serializable {
 
-  private static transient final Logger log = LogManager.getLogger(World.class);
   public static final int BORN_AGE = 5;
   public static final int FLOOR_Y = 370;
   public static final int NEW_GAME_WAIT_SEC = 20;
-
+  private static transient final Logger log = LogManager.getLogger(World.class);
   private final int period;
   private Pet pet;
   private Handler handler;
@@ -42,20 +41,11 @@ public class World implements Serializable {
     //deserialization
   }
 
-  // birth stage
-  public void setPet(Pet pet) {
-    if (pet == null) {
-      log.error("Method 'setPet' called with pet == null");
-      return;
-    }
-    this.pet = pet;
-  }
-
   // life stage - work with pet stats
   // 2nd level of abstraction
   public void tick() {
     pet.tick();
-    if (ticks < Game.FPS * period / 10) {
+    if (ticks < Game.FPS * period / 5) {
       ticks++;
       return;
     }
@@ -67,6 +57,7 @@ public class World implements Serializable {
   public void render(Graphics g) {
     entityManager.render(g);
     pet.render(g);
+
   }
 
   private void update() {
@@ -119,23 +110,22 @@ public class World implements Serializable {
     }
 
   }
-  // 1st level of abstraction
-
 
   // death stage
   public void wipe() {
   }
+  // 1st level of abstraction
 
   public boolean haveFood() {
     return entityManager.haveFood();
   }
 
-  public void setFood(Food food) {
-    entityManager.addFood(food);
-  }
-
   public Food getFood() {
     return entityManager.getFood();
+  }
+
+  public void setFood(Food food) {
+    entityManager.addFood(food);
   }
 
   public void cleanUp() {
@@ -146,10 +136,19 @@ public class World implements Serializable {
     entityManager.removeFood();
   }
 
-  // GETTERS SETTERS
-
   public Pet getPet() {
     return pet;
+  }
+
+  // GETTERS SETTERS
+
+  // birth stage
+  public void setPet(Pet pet) {
+    if (pet == null) {
+      log.error("Method 'setPet' called with pet == null");
+      return;
+    }
+    this.pet = pet;
   }
 
   public Handler getHandler() {

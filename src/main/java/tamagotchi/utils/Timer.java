@@ -50,4 +50,11 @@ public class Timer {
   public boolean isFinished() {
     return finished;
   }
+
+  public void reset() {
+    count = 0;
+    ticks = 0;
+    started = false;
+    finished = false;
+  }
 }

@@ -26,7 +26,7 @@ public class DeathState extends State {
   @Override
   public void tick() {
     uiManager.tick();
-    if (timer.isFinished()){
+    if (timer.isFinished()) {
       uiManager.addObject(btn_new);
     }
     if (timer.isStarted()) {
@@ -39,7 +39,7 @@ public class DeathState extends State {
     uiManager.render(g);
     Text.drawString(g, String.valueOf((int) handler.getWorld().getPet().getValue(Stat.AGE)), 254,
         76, Color.BLACK, Assets.font34);
-    if (!timer.isFinished()){
+    if (!timer.isFinished()) {
       Text.drawString(g, String.format("You can create a new pet after %d s", timer.left()), 30,
           440, Color.BLACK, Assets.font20);
     }
@@ -67,7 +67,7 @@ public class DeathState extends State {
   }
 
   private void reset() {
-    timer = new Timer(20);
+    timer.reset();
     uiManager = new UIManager(handler);
     initUI();
   }

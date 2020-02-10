@@ -8,34 +8,32 @@ import java.awt.*;
 
 public abstract class State {
 
-	private static State currentState = null;
-	
-	public static void setState(State state, Handler handler){
-		currentState = state;
-		handler.setUI(state.uiManager);
-	}
-	
-	public static State getState(){
-		return currentState;
-	}
-	
-	//CLASS
-	
-	protected Handler handler;
+  private static State currentState = null;
+  protected Handler handler;
+  protected UIManager uiManager;
 
-	protected UIManager uiManager;
-	
-	public State(Handler handler){
-		this.handler = handler;
-		uiManager = new UIManager(handler);
-	}
-	
-	public abstract void tick();
-	
-	public abstract void render(Graphics g);
+  //CLASS
 
-	public UIManager getUiManager() {
-		return uiManager;
-	}
-	
+  public State(Handler handler) {
+    this.handler = handler;
+    uiManager = new UIManager(handler);
+  }
+
+  public static void setState(State state, Handler handler) {
+    currentState = state;
+    handler.setUI(state.uiManager);
+  }
+
+  public static State getState() {
+    return currentState;
+  }
+
+  public abstract void tick();
+
+  public abstract void render(Graphics g);
+
+  public UIManager getUiManager() {
+    return uiManager;
+  }
+
 }
