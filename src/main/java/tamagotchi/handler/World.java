@@ -6,6 +6,8 @@ import tamagotchi.model.entities.EntityManager;
 import tamagotchi.model.entities.Food;
 import tamagotchi.model.entities.Poop;
 import tamagotchi.model.pet.Pet;
+import tamagotchi.states.DeathState;
+import tamagotchi.states.State;
 
 import java.awt.*;
 import java.io.Serializable;
@@ -15,6 +17,7 @@ public class World implements Serializable {
   private static transient final Logger log = LogManager.getLogger(World.class);
   public static final int BORN_AGE = 5;
   public static final int FLOOR_Y = 370;
+  public static final int NEW_GAME_WAIT_SEC = 20;
 
   private final int period;
   private Pet pet;
@@ -52,7 +55,7 @@ public class World implements Serializable {
   // 2nd level of abstraction
   public void tick() {
     pet.tick();
-    if (ticks < Game.FPS * period / 3) {
+    if (ticks < Game.FPS * period / 10) {
       ticks++;
       return;
     }
@@ -93,6 +96,9 @@ public class World implements Serializable {
 
     if (happinessIsMin) {
       pet.setAlive(false);
+      State.setState(handler.getGame().deathState, handler);
+      DeathState ds = (DeathState) (handler.getGame().deathState);
+      ds.getTimer().start();
       return;
     }
 
@@ -110,7 +116,6 @@ public class World implements Serializable {
       pet.decrementValue(Stat.HAPPINESS, 1);
     } else {
       pet.incrementValue(Stat.WASTE, 0.5);
-      pet.incrementValue(Stat.HAPPINESS, 1);
     }
 
   }

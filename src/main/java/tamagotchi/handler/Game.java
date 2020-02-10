@@ -3,6 +3,7 @@ package tamagotchi.handler;
 import tamagotchi.controller.MouseManager;
 import tamagotchi.display.Display;
 import tamagotchi.gfx.Assets;
+import tamagotchi.states.DeathState;
 import tamagotchi.states.GameState;
 import tamagotchi.states.SelectionState;
 import tamagotchi.states.State;
@@ -18,6 +19,8 @@ public class Game implements Runnable {
   //States
   public State gameState;
   public State selectionState;
+  public State deathState;
+
   private Display display;
   private int width, height;
   private boolean running = false;
@@ -52,6 +55,7 @@ public class Game implements Runnable {
 
     gameState = new GameState(handler);
     selectionState = new SelectionState(handler);
+    deathState = new DeathState(handler);
 
     State.setState(selectionState, handler);
 

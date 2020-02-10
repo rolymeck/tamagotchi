@@ -76,7 +76,7 @@ public class GameState extends State {
   public void render(Graphics g) {
     uiManager.render(g);
     Text.drawString(g, String.valueOf((int) world.getPet().getValue(Stat.AGE)), 115,
-        40, Color.BLACK, Assets.font26);
+        40, Color.BLACK, Assets.font34);
     world.render(g);
   }
 

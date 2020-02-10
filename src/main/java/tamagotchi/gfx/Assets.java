@@ -7,9 +7,9 @@ public class Assets {
 
   private static final int WIDTH_UNIT = 32, HEIGHT_UNIT = 32, BTN_WIDTH = 96, BTN_HEIGHT = 48;
 
-  public static Font font26;
+  public static Font font34, font20;
 
-  public static BufferedImage mainScreen, selectionScreen;
+  public static BufferedImage mainScreen, selectionScreen, deathScreen;
   public static BufferedImage greenPetSelectionTile, redPetSelectionTile, bluePetSelectionTile;
   public static BufferedImage egg, grave, greenPetFood, redPetFood, bluePetFood, poop;
 
@@ -32,7 +32,8 @@ public class Assets {
   public static BufferedImage[] bluePetL_left, bluePetL_right;
 
   public static void init() {
-    font26 = FontLoader.loadFont("res/fonts/KenneyMini.ttf", 34);
+    font34 = FontLoader.loadFont("res/fonts/KenneyMini.ttf", 34);
+    font20 = FontLoader.loadFont("res/fonts/KenneyMini.ttf", 20);
 
     SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/textures/Sheet.png"));
     SpriteSheet pets = new SpriteSheet(ImageLoader.loadImage("/textures/Pets.png"));
@@ -41,8 +42,9 @@ public class Assets {
     SpriteSheet hungerBarSheet = new SpriteSheet(ImageLoader.loadImage("/textures/HungerBar.png"));
     SpriteSheet wasteBarSheet = new SpriteSheet(ImageLoader.loadImage("/textures/WasteBar.png"));
 
-    mainScreen = ImageLoader.loadImage("/textures/mainScreen.png");
-    selectionScreen = ImageLoader.loadImage("/textures/selectionScreen.png");
+    mainScreen = ImageLoader.loadImage("/textures/MainScreen.png");
+    selectionScreen = ImageLoader.loadImage("/textures/SelectionScreen.png");
+    deathScreen = ImageLoader.loadImage("/textures/DeathScreen.png");
 
     greenPetSelectionTile = selTiles.crop(0, 0, WIDTH_UNIT * 4, HEIGHT_UNIT * 6);
     redPetSelectionTile = selTiles.crop(WIDTH_UNIT * 4, 0, WIDTH_UNIT * 4, HEIGHT_UNIT * 6);
