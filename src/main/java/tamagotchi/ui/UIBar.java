@@ -31,7 +31,7 @@ public class UIBar extends UIObject {
 
   @Override
   public void render(Graphics g) {
-    if (size > 0) {
+    if (size > 0 && world.getPet().isAlive()) {
       g.drawImage(images[0], (int) x, (int) y, 10, 22, null);
       int i = 1;
       for (; i < size; i++) {

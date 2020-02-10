@@ -5,7 +5,7 @@ import tamagotchi.gfx.Text;
 import tamagotchi.handler.Handler;
 import tamagotchi.handler.Stat;
 import tamagotchi.handler.World;
-import tamagotchi.model.food.Food;
+import tamagotchi.model.entities.Food;
 import tamagotchi.ui.UIBar;
 import tamagotchi.ui.UIImageAnimatedButton;
 import tamagotchi.ui.UIObject;
@@ -28,15 +28,11 @@ public class GameState extends State {
     UIObject btn_feed = new UIImageAnimatedButton(48, 410, 96, 48,
         Assets.btn_feed,
         () -> {
-          System.out.println("FEED CLICKED");
-          if (world.getFood() != null) {
-            System.out.println("Food is already on the screen");
+          if (world.haveFood() || !world.getPet().isAlive()) {
             return;
           }
-          System.out.println("No food on the screen");
           Food food = world.getPet().getFood();
           int point = PointManager.getRandomX(handler);
-          System.out.println("Point is " + point);
           food.setX(point);
           world.setFood(food);
         });
@@ -44,7 +40,11 @@ public class GameState extends State {
     UIObject btn_clean = new UIImageAnimatedButton(192, 410, 96, 48,
         Assets.btn_clean,
         () -> {
-
+          if (!world.getPet().isAlive()) {
+            return;
+          }
+          world.cleanUp();
+          world.getPet().cleanUp();
         });
 
     UIObject btn_play = new UIImageAnimatedButton(336, 410, 96, 48,

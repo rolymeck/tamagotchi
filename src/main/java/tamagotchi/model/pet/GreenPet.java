@@ -5,7 +5,7 @@ import tamagotchi.gfx.AnimationPack;
 import tamagotchi.gfx.AnimationStatic;
 import tamagotchi.gfx.Assets;
 import tamagotchi.handler.Handler;
-import tamagotchi.model.food.Food;
+import tamagotchi.model.entities.Food;
 
 public class GreenPet extends Pet {
 
@@ -28,9 +28,7 @@ public class GreenPet extends Pet {
         new AnimationPack.Size(animFrontL, animLeftL, animRightL)
     );
 
-    animFront = animPack.small().front();
-    animLeft = animPack.small().left();
-    animRight = animPack.small().right();
+    makeSmall();
 
     food = new Food(Assets.greenPetFood);
 

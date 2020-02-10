@@ -6,7 +6,7 @@ import tamagotchi.gfx.Assets;
 import tamagotchi.handler.Handler;
 import tamagotchi.handler.Stat;
 import tamagotchi.handler.World;
-import tamagotchi.model.food.Food;
+import tamagotchi.model.entities.Food;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -16,7 +16,7 @@ public abstract class Pet implements Serializable {
   public static final int X = 240;
   public static final int DEFAULT_WIDTH = 64;
   public static final int DEFAULT_HEIGHT = 64;
-  public static final int BORN_AGE = 5;
+
   public static final int ANIMATION_SPEED = 500;
 
   protected Handler handler;
@@ -48,8 +48,6 @@ public abstract class Pet implements Serializable {
     //tmp
     this.x = X;
     this.destination = (int) x;
-    this.width = DEFAULT_WIDTH;
-    this.height = DEFAULT_HEIGHT;
 
     this.happiness = Stat.HAPPINESS.getMax();
     this.hunger = Stat.HUNGER.getMin();
@@ -60,74 +58,29 @@ public abstract class Pet implements Serializable {
   }
 
   public void tick() {
-    if (!isAlive())
+    if (!isAlive() || age <= World.BORN_AGE)
       return;
 
-    age++;
+    animFront.tick();
+    animRight.tick();
+    animLeft.tick();
 
-    if (age < BORN_AGE)
-      return;
-
-    if (handler.getWorld().getFood() != null) {
+    if (handler.getWorld().haveFood()) {
       destination = (int) handler.getWorld().getFood().getX();
     }
 
     xMove = 0;
 
     if (x != destination) {
-      xMove = x > destination ? -3 : 3;
+      xMove = x > destination ? -1 : 1;
     }
 
-    move();
-
-    if (age == 10) {
-      animFront = animPack.medium().front();
-      animLeft = animPack.medium().left();
-      animRight = animPack.medium().right();
-      width += 32;
-      height += 32;
+    if (x == destination && handler.getWorld().haveFood()) {
+      feed();
     }
 
-    if (age == 15) {
-      animFront = animPack.large().front();
-      animLeft = animPack.large().left();
-      animRight = animPack.large().right();
-      width += 32;
-      height += 32;
-    }
-
-    animFront.tick();
-    animRight.tick();
-    animLeft.tick();
-    move();
-
-    final boolean happinessIsMin = happiness == Stat.HAPPINESS.getMin();
-
-    if (happinessIsMin) {
-      setAlive(false);
-      return;
-    }
-
-    final boolean hungerIsMax = hunger == Stat.HUNGER.getMax();
-    final boolean wasteIsMax = waste == Stat.HUNGER.getMax();
-
-    if (hungerIsMax) {
-      decrementValue(Stat.HAPPINESS, 1);
-    } else {
-      incrementValue(Stat.HUNGER, 1);
-    }
-
-    if (wasteIsMax) {
-      decrementValue(Stat.HAPPINESS, 1);
-    } else {
-      incrementValue(Stat.WASTE, 1);
-    }
-
-
-  }
-
-  public void move() {
     x += xMove;
+
   }
 
   public void render(Graphics g) {
@@ -154,13 +107,15 @@ public abstract class Pet implements Serializable {
 
   public void feed() {
     decrementValue(Stat.HUNGER, 50);
+    incrementValue(Stat.WASTE, 10);
+    handler.getWorld().feed();
   }
 
   public void cleanUp() {
     setValue(Stat.WASTE, 0);
   }
 
-  private void incrementValue(Stat stat, final double amount) {
+  public void incrementValue(Stat stat, final double amount) {
     final double maxValue = stat.getMax();
     final double oldValue = getValue(stat);
     final double modifiedValue = oldValue + amount;
@@ -168,7 +123,7 @@ public abstract class Pet implements Serializable {
     setValue(stat, newValue);
   }
 
-  private void decrementValue(Stat stat, final double amount) {
+  public void decrementValue(Stat stat, final double amount) {
     final double minValue = stat.getMin();
     final double oldValue = getValue(stat);
     final double modifiedValue = oldValue - amount;
@@ -207,6 +162,30 @@ public abstract class Pet implements Serializable {
     }
   }
 
+  public void makeSmall() {
+    animFront = animPack.small().front();
+    animLeft = animPack.small().left();
+    animRight = animPack.small().right();
+    width = DEFAULT_WIDTH;
+    height = DEFAULT_HEIGHT;
+  }
+
+  public void makeMedium() {
+    animFront = animPack.medium().front();
+    animLeft = animPack.medium().left();
+    animRight = animPack.medium().right();
+    width = 96;
+    height = 96;
+  }
+
+  public void makeLarge() {
+    animFront = animPack.large().front();
+    animLeft = animPack.large().left();
+    animRight = animPack.large().right();
+    width = 128;
+    height = 128;
+  }
+
   // GETTERS SETTERS
 
 
@@ -224,5 +203,9 @@ public abstract class Pet implements Serializable {
 
   public void setAlive(boolean alive) {
     this.alive = alive;
+  }
+
+  public float getX() {
+    return x;
   }
 }
