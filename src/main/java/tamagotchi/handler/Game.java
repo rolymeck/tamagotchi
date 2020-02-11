@@ -46,13 +46,29 @@ public class Game implements Runnable {
     Assets.init();
 
     handler = new Handler(this);
+
     states = new HashMap<>();
     states.put(EState.GAME, new GameState(handler));
     states.put(EState.SELECTION, new SelectionState(handler));
     states.put(EState.DEATH, new DeathState(handler));
 
-    State.setState(states.get(EState.SELECTION), handler);
-
+    /*World world = SLManager.loadWorld();
+    if (world == null) {*/
+      State.setState(states.get(EState.SELECTION), handler);
+   /* } else {
+      world.setHandler(handler);
+      world.setEntityManager(new EntityManager(handler));
+      world.getPet().setHandler(handler);
+      GameState gs = (GameState) states.get(EState.GAME);
+      gs.setWorld(world);
+      switch (world.getPet().getStage()) {
+        case DEAD:
+          State.setState(states.get(EState.DEATH), handler);
+          break;
+        default:
+          State.setState(states.get(EState.GAME), handler);
+      }
+    }*/
   }
 
   private void tick() {
@@ -110,7 +126,7 @@ public class Game implements Runnable {
         double MHz = Math.rint(100.0 * hz / 1_000_000f) / 100.0;
         System.out.println("FPS: " + ticks + " MHz: " + MHz);
         if (handler.getWorld().getPet() != null) {
-          System.out.println("AGE: " + handler.getWorld().getPet().getValue(Stat.AGE) + " HPN: " + handler.getWorld().getPet().getValue(Stat.HAPPINESS) + " HNG: " + handler.getWorld().getPet().getValue(Stat.HUNGER) + " WST: " + handler.getWorld().getPet().getValue(Stat.WASTE));
+          //System.out.println("AGE: " + handler.getWorld().getPet().getValue(Stat.AGE) + " HPN: " + handler.getWorld().getPet().getValue(Stat.HAPPINESS) + " HNG: " + handler.getWorld().getPet().getValue(Stat.HUNGER) + " WST: " + handler.getWorld().getPet().getValue(Stat.WASTE));
         }
         ticks = 0;
         timer = 0;

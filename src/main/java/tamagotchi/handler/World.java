@@ -1,5 +1,6 @@
 package tamagotchi.handler;
 
+import tamagotchi.io.SLManager;
 import tamagotchi.model.entities.EntityManager;
 import tamagotchi.model.entities.Food;
 import tamagotchi.model.entities.Poop;
@@ -17,11 +18,16 @@ public class World implements Serializable {
   public static final int FLOOR_Y = 370;
   public static final int NEW_GAME_WAIT_SEC = 20;
 
-  private final int period; //ser
+  private int period; //ser
   private Pet pet; //ser
-  private Handler handler;
-  private EntityManager entityManager;
-  private int ticks = 0;
+  private long saveTime; //ser
+  private transient Handler handler;
+  private transient EntityManager entityManager;
+  private transient int updateTicks = 0;
+  private transient int saveTicks = 0;
+
+  public World() {
+  }
 
   public World(Handler handler, int period) {
     this.handler = handler;
@@ -35,13 +41,19 @@ public class World implements Serializable {
 
   public void tick() {
     pet.tick();
-    if (ticks < period) {
-      ticks++;
-      return;
+    if (updateTicks < period) {
+      updateTicks++;
+    } else {
+      updateTicks = 0;
+      updateStats();
     }
 
-    ticks = 0;
-    updateStats();
+    if (saveTicks < Game.FPS) {
+      saveTicks++;
+    } else {
+      saveTicks = 0;
+      save();
+    }
   }
 
   public void render(Graphics g) {
@@ -103,6 +115,20 @@ public class World implements Serializable {
     }
   }
 
+  private void save() {
+    SLManager.saveWorld(this);
+    saveTime = System.currentTimeMillis();
+    System.out.println(toString());
+  }
+
+  public void cleanUp() {
+    entityManager.removePoops();
+  }
+
+  public void feed() {
+    entityManager.removeFood();
+  }
+
   public boolean haveFood() {
     return entityManager.haveFood();
   }
@@ -113,14 +139,6 @@ public class World implements Serializable {
 
   public void setFood(Food food) {
     entityManager.addFood(food);
-  }
-
-  public void cleanUp() {
-    entityManager.removePoops();
-  }
-
-  public void feed() {
-    entityManager.removeFood();
   }
 
   public Pet getPet() {
@@ -137,5 +155,18 @@ public class World implements Serializable {
 
   public void setHandler(Handler handler) {
     this.handler = handler;
+  }
+
+  public void setEntityManager(EntityManager entityManager) {
+    this.entityManager = entityManager;
+  }
+
+  @Override
+  public String toString() {
+    return "World{" +
+        "period=" + period +
+        ", pet=" + pet +
+        ", saveTime=" + saveTime +
+        '}';
   }
 }

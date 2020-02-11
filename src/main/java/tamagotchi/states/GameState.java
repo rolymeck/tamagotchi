@@ -81,7 +81,7 @@ public class GameState extends State {
     world.render(g);
   }
 
-  private void setWorld(World world) {
+  public void setWorld(World world) {
     this.world = world;
     handler.setWorld(world);
   }

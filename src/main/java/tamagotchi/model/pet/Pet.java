@@ -20,7 +20,8 @@ public abstract class Pet implements Serializable {
   public static final int DEFAULT_HEIGHT = 64;
   public static final float ANIMATION_SPEED = 0.5f;
 
-  protected Handler handler;
+  protected transient Handler handler;
+
   protected float age; //ser
   protected Stage stage; //ser
 
@@ -28,20 +29,22 @@ public abstract class Pet implements Serializable {
   protected float hunger; //ser
   protected float waste; //ser
 
-  protected float x;
-  protected int width, height;
+  protected transient float x;
+  protected transient int width, height;
 
-  protected int destination;
-  protected boolean actualDestination;
-  protected int xMove;
-  protected Timer moveTimer;
+  protected transient int destination;
+  protected transient boolean actualDestination;
+  protected transient int xMove;
+  protected transient Timer moveTimer;
 
-  protected Food food;
+  protected transient Food food;
 
-  protected AnimationPack animPack;
-  protected Animation animFront;
-  protected Animation animLeft;
-  protected Animation animRight;
+  protected transient AnimationPack animPack;
+  protected transient Animation animFront;
+  protected transient Animation animLeft;
+  protected transient Animation animRight;
+
+  protected Pet() {}
 
   protected Pet(Handler handler) {
     this.handler = handler;
@@ -239,7 +242,22 @@ public abstract class Pet implements Serializable {
     this.stage = stage;
   }
 
+  public void setHandler(Handler handler) {
+    this.handler = handler;
+  }
+
   public enum Stage {
     BORN, SMALL, MEDIUM, LARGE, DEAD
+  }
+
+  @Override
+  public String toString() {
+    return "Pet{" +
+        "age=" + age +
+        ", stage=" + stage +
+        ", happiness=" + happiness +
+        ", hunger=" + hunger +
+        ", waste=" + waste +
+        '}';
   }
 }
