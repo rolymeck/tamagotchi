@@ -3,6 +3,8 @@ package tamagotchi.handler;
 import tamagotchi.controller.MouseManager;
 import tamagotchi.display.Display;
 import tamagotchi.gfx.Assets;
+import tamagotchi.io.SLManager;
+import tamagotchi.model.pet.Pet;
 import tamagotchi.states.*;
 
 import java.awt.*;
@@ -34,14 +36,17 @@ public class Game implements Runnable {
     this.title = title;
   }
 
+  public static int getFPS() {
+    return FPS;
+  }
+
+  public static Game getCurrentGame() {
+    return currentGame;
+  }
+
   private void init() {
     currentGame = this;
     display = new Display(title, width, height);
-    mouseManager = new MouseManager();
-    display.getFrame().addMouseListener(mouseManager);
-    display.getFrame().addMouseMotionListener(mouseManager);
-    display.getCanvas().addMouseListener(mouseManager);
-    display.getCanvas().addMouseMotionListener(mouseManager);
 
     Assets.init();
 
@@ -49,24 +54,31 @@ public class Game implements Runnable {
     states.put(EState.GAME, new GameState());
     states.put(EState.SELECTION, new SelectionState());
     states.put(EState.DEATH, new DeathState());
-
-    /*World world = SLManager.loadWorld();
-    if (world == null) {*/
     State.setState(getState(EState.SELECTION));
-   /* } else {
-      world.setHandler(handler);
-      world.setEntityManager(new EntityManager(handler));
-      world.getPet().setHandler(handler);
-      GameState gs = (GameState) states.get(EState.GAME);
-      gs.setWorld(world);
-      switch (world.getPet().getStage()) {
-        case DEAD:
-          State.setState(states.get(EState.DEATH), handler);
-          break;
-        default:
-          State.setState(states.get(EState.GAME), handler);
+
+    mouseManager = new MouseManager();
+    display.getFrame().addMouseListener(mouseManager);
+    display.getFrame().addMouseMotionListener(mouseManager);
+    display.getCanvas().addMouseListener(mouseManager);
+    display.getCanvas().addMouseMotionListener(mouseManager);
+
+    World world = SLManager.loadWorld();
+    if (world == null) {
+      State.setState(getState(EState.SELECTION));
+    } else {
+      long timePassed = (int) ((System.currentTimeMillis() - world.getSaveTime()) / 1000);
+      float ticksPerSecond = ((float) getFPS() / World.PERIOD);
+      int amount = (int) (timePassed * ticksPerSecond);
+      for (int i = 0; i < amount; i++) {
+        world.updateStats();
       }
-    }*/
+      setWorld(world);
+      if (world.getPet().getStage() == Pet.Stage.DEAD) {
+        State.setState(states.get(EState.DEATH));
+      } else {
+        State.setState(states.get(EState.GAME));
+      }
+    }
   }
 
   private void tick() {
@@ -167,14 +179,6 @@ public class Game implements Runnable {
 
   public void setWorld(World world) {
     this.world = world;
-  }
-
-  public static int getFPS() {
-    return FPS;
-  }
-
-  public static Game getCurrentGame() {
-    return currentGame;
   }
 }
 

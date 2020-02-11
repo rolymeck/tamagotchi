@@ -18,10 +18,11 @@ public class Animation {
   }
 
   public void tick() {
-    timer += System.currentTimeMillis() - lastTime;
+    timer += (System.currentTimeMillis() - lastTime);
     lastTime = System.currentTimeMillis();
+    float floatTimer = ((float) timer) / 1_000;
 
-    if ((float) (timer / 1_000) > frequency) {
+    if (floatTimer > frequency) {
       index++;
       timer = 0;
       if (index >= frames.length)

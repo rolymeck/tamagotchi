@@ -52,7 +52,7 @@ public class SelectionState extends State {
   }
 
   private void createWorld(Pet pet) {
-    World world = new World(12);
+    World world = new World();
     world.setPet(pet);
 
     Game game = Game.getCurrentGame();

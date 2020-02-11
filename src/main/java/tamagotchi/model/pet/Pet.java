@@ -1,6 +1,5 @@
 package tamagotchi.model.pet;
 
-import tamagotchi.gfx.Animation;
 import tamagotchi.gfx.AnimationPack;
 import tamagotchi.gfx.Assets;
 import tamagotchi.handler.Game;
@@ -12,14 +11,15 @@ import tamagotchi.utils.Timer;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
-public abstract class Pet implements Serializable {
+public abstract class Pet implements Externalizable {
   public static final int SPAWN_X = 240;
-  public static final int DEFAULT_WIDTH = 64;
-  public static final int DEFAULT_HEIGHT = 64;
   public static final float ANIMATION_SPEED = 0.5f;
-
+  private static final long serialVersionUID = 1L;
   protected float age; //ser
   protected Stage stage; //ser
 
@@ -28,7 +28,6 @@ public abstract class Pet implements Serializable {
   protected float waste; //ser
 
   protected transient float x;
-  protected transient int width, height;
 
   protected transient int destination;
   protected transient boolean actualDestination;
@@ -38,9 +37,6 @@ public abstract class Pet implements Serializable {
   protected transient Food food;
 
   protected transient AnimationPack animPack;
-  protected transient Animation animFront;
-  protected transient Animation animLeft;
-  protected transient Animation animRight;
 
   protected Pet() {
     this.moveTimer = new Timer(2);
@@ -53,8 +49,6 @@ public abstract class Pet implements Serializable {
     this.hunger = Stat.HUNGER.getMin();
     this.waste = Stat.WASTE.getMin();
     this.stage = Stage.BORN;
-    this.width = DEFAULT_WIDTH;
-    this.height = DEFAULT_HEIGHT;
     this.age = 0;
   }
 
@@ -62,9 +56,7 @@ public abstract class Pet implements Serializable {
     if (stage == Stage.BORN || stage == Stage.DEAD)
       return;
 
-    animFront.tick();
-    animRight.tick();
-    animLeft.tick();
+    animPack.tick(stage);
 
     xMove = 0;
 
@@ -122,6 +114,8 @@ public abstract class Pet implements Serializable {
         image = getCurrentAnimationFrame();
     }
 
+    int width = getWidth();
+    int height = getHeight();
     final int xPoint = (int) (x) - width / 2;
     final int yPoint = World.FLOOR_Y - height;
 
@@ -130,11 +124,11 @@ public abstract class Pet implements Serializable {
 
   private BufferedImage getCurrentAnimationFrame() {
     if (xMove > 0) {
-      return animRight.getCurrentFrame();
+      return animPack.getPack(stage).right().getCurrentFrame();
     } else if (xMove < 0) {
-      return animLeft.getCurrentFrame();
+      return animPack.getPack(stage).left().getCurrentFrame();
     } else {
-      return animFront.getCurrentFrame();
+      return animPack.getPack(stage).front().getCurrentFrame();
     }
   }
 
@@ -196,30 +190,55 @@ public abstract class Pet implements Serializable {
   }
 
   public void makeSmall() {
-    animFront = animPack.small().front();
-    animLeft = animPack.small().left();
-    animRight = animPack.small().right();
-    width = DEFAULT_WIDTH;
-    height = DEFAULT_HEIGHT;
     stage = Stage.SMALL;
   }
 
   public void makeMedium() {
-    animFront = animPack.medium().front();
-    animLeft = animPack.medium().left();
-    animRight = animPack.medium().right();
-    width = 96;
-    height = 96;
     stage = Stage.MEDIUM;
   }
 
   public void makeLarge() {
-    animFront = animPack.large().front();
-    animLeft = animPack.large().left();
-    animRight = animPack.large().right();
-    width = 128;
-    height = 128;
     stage = Stage.LARGE;
+  }
+
+  private int getWidth() {
+    switch (stage) {
+      case MEDIUM:
+        return 96;
+      case LARGE:
+        return 128;
+      default:
+        return 64;
+    }
+  }
+
+  private int getHeight() {
+    switch (stage) {
+      case MEDIUM:
+        return 96;
+      case LARGE:
+        return 128;
+      default:
+        return 64;
+    }
+  }
+
+  @Override
+  public void writeExternal(ObjectOutput out) throws IOException {
+    out.writeFloat(age);
+    out.writeObject(stage);
+    out.writeFloat(happiness);
+    out.writeFloat(hunger);
+    out.writeFloat(waste);
+  }
+
+  @Override
+  public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+    age = in.readFloat();
+    stage = (Stage) in.readObject();
+    happiness = in.readFloat();
+    hunger = in.readFloat();
+    waste = in.readFloat();
   }
 
   public Food getFood() {
@@ -238,10 +257,6 @@ public abstract class Pet implements Serializable {
     this.stage = stage;
   }
 
-  public enum Stage {
-    BORN, SMALL, MEDIUM, LARGE, DEAD
-  }
-
   @Override
   public String toString() {
     return "Pet{" +
@@ -250,6 +265,16 @@ public abstract class Pet implements Serializable {
         ", happiness=" + happiness +
         ", hunger=" + hunger +
         ", waste=" + waste +
+        ", x=" + x +
+        ", destination=" + destination +
+        ", actualDestination=" + actualDestination +
+        ", xMove=" + xMove +
+        ", food=" + food +
+        ", animPack=" + animPack +
         '}';
+  }
+
+  public enum Stage {
+    BORN, SMALL, MEDIUM, LARGE, DEAD
   }
 }

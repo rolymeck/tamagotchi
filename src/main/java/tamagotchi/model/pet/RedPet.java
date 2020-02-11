@@ -7,6 +7,7 @@ import tamagotchi.gfx.Assets;
 import tamagotchi.model.entities.Food;
 
 public class RedPet extends Pet {
+  private static final long serialVersionUID = 1L;
 
   public RedPet() {
 

@@ -1,5 +1,7 @@
 package tamagotchi.gfx;
 
+import tamagotchi.model.pet.Pet;
+
 public class AnimationPack {
 
   private Size small;
@@ -24,6 +26,35 @@ public class AnimationPack {
     return this.large;
   }
 
+  public void tick(Pet.Stage stage) {
+    switch (stage) {
+      case SMALL:
+        small.tick();
+        break;
+      case MEDIUM:
+        medium.tick();
+        break;
+      case LARGE:
+        large.tick();
+    }
+  }
+
+  public void render() {
+
+  }
+
+  public Size getPack(Pet.Stage stage) {
+    switch (stage) {
+      case SMALL:
+        return small;
+      case MEDIUM:
+        return medium;
+      case LARGE:
+        return large;
+    }
+    return null;
+  }
+
   public static class Size {
     private Animation front;
     private Animation left;
@@ -46,5 +77,12 @@ public class AnimationPack {
     public Animation right() {
       return this.right;
     }
+
+    public void tick() {
+      front.tick();
+      left.tick();
+      right.tick();
+    }
+
   }
 }

@@ -10,15 +10,17 @@ import tamagotchi.states.EState;
 import tamagotchi.states.State;
 
 import java.awt.*;
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 
-public class World implements Serializable {
-
+public class World implements Externalizable {
   public static final int BORN_AGE = 5;
   public static final int FLOOR_Y = 370;
   public static final int NEW_GAME_WAIT_SEC = 20;
-
-  private int period; //ser
+  public static final int PERIOD = 30;
+  private static final long serialVersionUID = 1L;
   private Pet pet; //ser
   private long saveTime; //ser
   private transient EntityManager entityManager;
@@ -26,15 +28,7 @@ public class World implements Serializable {
   private transient int saveTicks = 0;
 
   public World() {
-  }
-
-  public World(int period) {
-    this.period = period;
     this.entityManager = new EntityManager();
-  }
-
-  public void skip() {
-    //deserialization
   }
 
   public void tick() {
@@ -42,7 +36,7 @@ public class World implements Serializable {
       pet.tick();
     }
 
-    if (updateTicks < period) {
+    if (updateTicks < PERIOD) {
       updateTicks++;
     } else {
       updateTicks = 0;
@@ -62,7 +56,7 @@ public class World implements Serializable {
     pet.render(g);
   }
 
-  private void updateStats() {
+  void updateStats() {
     if (pet.getStage() == Pet.Stage.DEAD) {
       return;
     }
@@ -122,6 +116,18 @@ public class World implements Serializable {
     System.out.println(toString());
   }
 
+  @Override
+  public void writeExternal(ObjectOutput out) throws IOException {
+    out.writeObject(pet);
+    out.writeLong(saveTime);
+  }
+
+  @Override
+  public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+    pet = (Pet) in.readObject();
+    saveTime = in.readLong();
+  }
+
   public void cleanUp() {
     entityManager.removePoops();
   }
@@ -150,14 +156,14 @@ public class World implements Serializable {
     this.pet = pet;
   }
 
-  public void setEntityManager(EntityManager entityManager) {
-    this.entityManager = entityManager;
+  public long getSaveTime() {
+    return saveTime;
   }
 
   @Override
   public String toString() {
     return "World{" +
-        "period=" + period +
+        "period=" + PERIOD +
         ", pet=" + pet +
         ", saveTime=" + saveTime +
         '}';
