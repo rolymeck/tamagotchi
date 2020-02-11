@@ -1,12 +1,11 @@
 package tamagotchi.handler;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import tamagotchi.model.entities.EntityManager;
 import tamagotchi.model.entities.Food;
 import tamagotchi.model.entities.Poop;
 import tamagotchi.model.pet.Pet;
 import tamagotchi.states.DeathState;
+import tamagotchi.states.EState;
 import tamagotchi.states.State;
 
 import java.awt.*;
@@ -17,79 +16,73 @@ public class World implements Serializable {
   public static final int BORN_AGE = 5;
   public static final int FLOOR_Y = 370;
   public static final int NEW_GAME_WAIT_SEC = 20;
-  private static transient final Logger log = LogManager.getLogger(World.class);
-  private final int period;
-  private Pet pet;
+
+  private final int period; //ser
+  private Pet pet; //ser
   private Handler handler;
-
   private EntityManager entityManager;
-
   private int ticks = 0;
-
-  //private LocalDateTime lastFeeding;
-  //private LocalDateTime lastCleaning;
 
   public World(Handler handler, int period) {
     this.handler = handler;
     this.period = period;
     this.entityManager = new EntityManager(handler);
-    log.debug("World created with period " + period);
   }
 
-  //load
   public void skip() {
     //deserialization
   }
 
-  // life stage - work with pet stats
-  // 2nd level of abstraction
   public void tick() {
     pet.tick();
-    if (ticks < Game.FPS * period / 5) {
+    if (ticks < period) {
       ticks++;
       return;
     }
 
     ticks = 0;
-    update();
+    updateStats();
   }
 
   public void render(Graphics g) {
     entityManager.render(g);
     pet.render(g);
-
   }
 
-  private void update() {
-    if (!pet.isAlive()) {
+  private void updateStats() {
+    if (pet.getStage() == Pet.Stage.DEAD) {
       return;
-    }
-
-    if (pet.getValue(Stat.AGE) == 15) {
-      pet.makeMedium();
-    }
-
-    if (pet.getValue(Stat.AGE) == 30) {
-      pet.makeLarge();
     }
 
     if ((int) (pet.getValue(Stat.WASTE) / 20) > entityManager.poopsAmount()) {
       entityManager.addPoop(new Poop(pet.getX()));
     }
 
-    pet.incrementValue(Stat.AGE, 1);
+    pet.incrementValue(Stat.AGE, 0.33f);
 
-    if (pet.getValue(Stat.AGE) < BORN_AGE) {
+    if (pet.getStage() == Pet.Stage.BORN && pet.getValue(Stat.AGE) > BORN_AGE) {
+      pet.makeSmall();
+    }
+
+    if (pet.getStage() == Pet.Stage.BORN) {
       return;
+    }
+
+    if (pet.getStage() == Pet.Stage.SMALL && pet.getValue(Stat.AGE) > 15) {
+      pet.makeMedium();
+    }
+
+    if (pet.getStage() == Pet.Stage.MEDIUM && pet.getValue(Stat.AGE) > 30) {
+      pet.makeLarge();
     }
 
     final boolean happinessIsMin = pet.getValue(Stat.HAPPINESS) == Stat.HAPPINESS.getMin();
 
     if (happinessIsMin) {
-      pet.setAlive(false);
-      State.setState(handler.getGame().deathState, handler);
-      DeathState ds = (DeathState) (handler.getGame().deathState);
-      ds.getTimer().start();
+      pet.setStage(Pet.Stage.DEAD);
+      DeathState deathState = (DeathState) handler.getGame().getStates().get(EState.DEATH);
+      State.setState(deathState, handler);
+      deathState.getTimer().start();
       return;
     }
 
@@ -106,15 +99,9 @@ public class World implements Serializable {
     if (wasteIsMax) {
       pet.decrementValue(Stat.HAPPINESS, 1);
     } else {
-      pet.incrementValue(Stat.WASTE, 0.5);
+      pet.incrementValue(Stat.WASTE, 0.5f);
     }
-
   }
-
-  // death stage
-  public void wipe() {
-  }
-  // 1st level of abstraction
 
   public boolean haveFood() {
     return entityManager.haveFood();
@@ -140,14 +127,7 @@ public class World implements Serializable {
     return pet;
   }
 
-  // GETTERS SETTERS
-
-  // birth stage
   public void setPet(Pet pet) {
-    if (pet == null) {
-      log.error("Method 'setPet' called with pet == null");
-      return;
-    }
     this.pet = pet;
   }
 
@@ -158,10 +138,4 @@ public class World implements Serializable {
   public void setHandler(Handler handler) {
     this.handler = handler;
   }
-
-
-  public int getPeriod() {
-    return period;
-  }
-
 }

@@ -6,8 +6,8 @@ public class AnimationStatic extends Animation {
 
   private BufferedImage image;
 
-  public AnimationStatic(int speed, BufferedImage image) {
-    super(speed, null);
+  public AnimationStatic(float frequency, BufferedImage image) {
+    super(frequency, null);
     this.image = image;
   }
 

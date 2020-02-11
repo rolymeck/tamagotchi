@@ -5,21 +5,21 @@ public enum Stat {
   HUNGER(0, 100),
   WASTE(0, 100),
   HAPPINESS(0, 100),
-  AGE(0, 1000);
+  AGE(0, Float.MAX_VALUE);
 
-  private final double min;
-  private final double max;
+  private final float min;
+  private final float max;
 
-  Stat(double min, double max) {
+  Stat(float min, float max) {
     this.min = min;
     this.max = max;
   }
 
-  public double getMin() {
+  public float getMin() {
     return min;
   }
 
-  public double getMax() {
+  public float getMax() {
     return max;
   }
 }

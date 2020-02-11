@@ -6,6 +6,7 @@ import tamagotchi.handler.Handler;
 import tamagotchi.handler.Stat;
 import tamagotchi.handler.World;
 import tamagotchi.model.entities.Food;
+import tamagotchi.model.pet.Pet;
 import tamagotchi.ui.UIBar;
 import tamagotchi.ui.UIImageAnimatedButton;
 import tamagotchi.ui.UIObject;
@@ -20,7 +21,7 @@ public class GameState extends State {
 
   public GameState(Handler handler) {
     super(handler);
-    setWorld(new World(handler, 1));
+    setWorld(new World(handler, 12));
 
     UIObject mainScreen = new UIStaticScreen(0, 0, 480, 480,
         Assets.mainScreen);
@@ -28,7 +29,7 @@ public class GameState extends State {
     UIObject btn_feed = new UIImageAnimatedButton(48, 410, 96, 48,
         Assets.btn_feed,
         () -> {
-          if (world.haveFood() || !world.getPet().isAlive()) {
+          if (world.haveFood() || world.getPet().getStage() == Pet.Stage.DEAD) {
             return;
           }
           Food food = world.getPet().getFood();
@@ -40,7 +41,7 @@ public class GameState extends State {
     UIObject btn_clean = new UIImageAnimatedButton(192, 410, 96, 48,
         Assets.btn_clean,
         () -> {
-          if (!world.getPet().isAlive()) {
+          if (world.getPet().getStage() == Pet.Stage.DEAD) {
             return;
           }
           world.cleanUp();

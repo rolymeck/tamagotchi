@@ -2,6 +2,7 @@ package tamagotchi.ui;
 
 import tamagotchi.handler.Stat;
 import tamagotchi.handler.World;
+import tamagotchi.model.pet.Pet;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -22,7 +23,7 @@ public class UIBar extends UIObject {
 
   @Override
   public void tick() {
-    int percent = (int) Math.round(world.getPet().getValue(stat));
+    int percent = Math.round(world.getPet().getValue(stat));
     int dozens = percent / 10;
     boolean moreThan5 = (percent % 10) >= 5;
     int additive = moreThan5 ? 1 : 0;
@@ -31,7 +32,7 @@ public class UIBar extends UIObject {
 
   @Override
   public void render(Graphics g) {
-    if (size > 0 && world.getPet().isAlive()) {
+    if (size > 0 && world.getPet().getStage() != Pet.Stage.DEAD) {
       g.drawImage(images[0], (int) x, (int) y, 10, 22, null);
       int i = 1;
       for (; i < size; i++) {

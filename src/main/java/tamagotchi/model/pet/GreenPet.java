@@ -28,9 +28,6 @@ public class GreenPet extends Pet {
         new AnimationPack.Size(animFrontL, animLeftL, animRightL)
     );
 
-    makeSmall();
-
     food = new Food(Assets.greenPetFood);
-
   }
 }

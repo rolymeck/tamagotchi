@@ -15,19 +15,18 @@ import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
 public abstract class Pet implements Serializable {
-  public static final int X = 240;
+  public static final int SPAWN_X = 240;
   public static final int DEFAULT_WIDTH = 64;
   public static final int DEFAULT_HEIGHT = 64;
+  public static final float ANIMATION_SPEED = 0.5f;
 
-  public static final int ANIMATION_SPEED = 500;
-  protected final long birthday;
   protected Handler handler;
-  protected boolean alive;
-  protected int age;
+  protected float age; //ser
+  protected Stage stage; //ser
 
-  protected double happiness;
-  protected double hunger;
-  protected double waste;
+  protected float happiness; //ser
+  protected float hunger; //ser
+  protected float waste; //ser
 
   protected float x;
   protected int width, height;
@@ -49,19 +48,20 @@ public abstract class Pet implements Serializable {
     this.moveTimer = new Timer(2);
 
     //tmp
-    this.x = X;
+    this.x = SPAWN_X;
     this.destination = (int) x;
 
     this.happiness = Stat.HAPPINESS.getMax();
     this.hunger = Stat.HUNGER.getMin();
     this.waste = Stat.WASTE.getMin();
-    this.alive = true;
-    this.birthday = System.currentTimeMillis();
+    this.stage = Stage.BORN;
+    this.width = DEFAULT_WIDTH;
+    this.height = DEFAULT_HEIGHT;
     this.age = 0;
   }
 
   public void tick() {
-    if (!isAlive() || age <= World.BORN_AGE)
+    if (stage == Stage.BORN || stage == Stage.DEAD)
       return;
 
     animFront.tick();
@@ -111,15 +111,22 @@ public abstract class Pet implements Serializable {
   }
 
   public void render(Graphics g) {
-    if (!isAlive()) {
-      g.drawImage(Assets.grave, (int) (x) - width / 2, World.FLOOR_Y - height, width, height, null);
-      return;
+    final Image image;
+    switch (stage) {
+      case BORN:
+        image = Assets.egg;
+        break;
+      case DEAD:
+        image = Assets.grave;
+        break;
+      default:
+        image = getCurrentAnimationFrame();
     }
-    if (age < 5) {
-      g.drawImage(Assets.egg, (int) (x) - width / 2, World.FLOOR_Y - height, width, height, null);
-    } else {
-      g.drawImage(getCurrentAnimationFrame(), (int) (x) - width / 2, World.FLOOR_Y - height, width, height, null);
-    }
+
+    final int xPoint = (int) (x) - width / 2;
+    final int yPoint = World.FLOOR_Y - height;
+
+    g.drawImage(image, xPoint, yPoint, width, height, null);
   }
 
   private BufferedImage getCurrentAnimationFrame() {
@@ -142,23 +149,23 @@ public abstract class Pet implements Serializable {
     setValue(Stat.WASTE, 0);
   }
 
-  public void incrementValue(Stat stat, final double amount) {
-    final double maxValue = stat.getMax();
-    final double oldValue = getValue(stat);
-    final double modifiedValue = oldValue + amount;
-    final double newValue = Math.min(modifiedValue, maxValue);
+  public void incrementValue(Stat stat, final float amount) {
+    final float maxValue = stat.getMax();
+    final float oldValue = getValue(stat);
+    final float modifiedValue = oldValue + amount;
+    final float newValue = Math.min(modifiedValue, maxValue);
     setValue(stat, newValue);
   }
 
-  public void decrementValue(Stat stat, final double amount) {
-    final double minValue = stat.getMin();
-    final double oldValue = getValue(stat);
-    final double modifiedValue = oldValue - amount;
-    final double newValue = Math.max(modifiedValue, minValue);
+  public void decrementValue(Stat stat, final float amount) {
+    final float minValue = stat.getMin();
+    final float oldValue = getValue(stat);
+    final float modifiedValue = oldValue - amount;
+    final float newValue = Math.max(modifiedValue, minValue);
     setValue(stat, newValue);
   }
 
-  public double getValue(Stat stat) {
+  public float getValue(Stat stat) {
     switch (stat) {
       case HUNGER:
         return hunger;
@@ -172,7 +179,7 @@ public abstract class Pet implements Serializable {
     return 0; //ignore
   }
 
-  public void setValue(Stat stat, final double value) {
+  public void setValue(Stat stat, final float value) {
     switch (stat) {
       case HUNGER:
         hunger = value;
@@ -184,7 +191,7 @@ public abstract class Pet implements Serializable {
         happiness = value;
         break;
       case AGE:
-        age = (int) value;
+        age = value;
         break;
     }
   }
@@ -195,6 +202,7 @@ public abstract class Pet implements Serializable {
     animRight = animPack.small().right();
     width = DEFAULT_WIDTH;
     height = DEFAULT_HEIGHT;
+    stage = Stage.SMALL;
   }
 
   public void makeMedium() {
@@ -203,6 +211,7 @@ public abstract class Pet implements Serializable {
     animRight = animPack.medium().right();
     width = 96;
     height = 96;
+    stage = Stage.MEDIUM;
   }
 
   public void makeLarge() {
@@ -211,28 +220,26 @@ public abstract class Pet implements Serializable {
     animRight = animPack.large().right();
     width = 128;
     height = 128;
+    stage = Stage.LARGE;
   }
-
-  // GETTERS SETTERS
-
 
   public Food getFood() {
     return food;
   }
 
-  public long getBirthday() {
-    return birthday;
-  }
-
-  public boolean isAlive() {
-    return alive;
-  }
-
-  public void setAlive(boolean alive) {
-    this.alive = alive;
-  }
-
   public float getX() {
     return x;
+  }
+
+  public Stage getStage() {
+    return stage;
+  }
+
+  public void setStage(Stage stage) {
+    this.stage = stage;
+  }
+
+  public enum Stage {
+    BORN, SMALL, MEDIUM, LARGE, DEAD
   }
 }

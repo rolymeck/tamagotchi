@@ -4,6 +4,7 @@ import tamagotchi.gfx.Assets;
 import tamagotchi.gfx.Text;
 import tamagotchi.handler.Handler;
 import tamagotchi.handler.Stat;
+import tamagotchi.handler.World;
 import tamagotchi.ui.UIImageAnimatedButton;
 import tamagotchi.ui.UIManager;
 import tamagotchi.ui.UIObject;
@@ -19,7 +20,7 @@ public class DeathState extends State {
 
   public DeathState(Handler handler) {
     super(handler);
-    timer = new Timer(20);
+    timer = new Timer(World.NEW_GAME_WAIT_SEC);
     initUI();
   }
 
@@ -55,8 +56,9 @@ public class DeathState extends State {
     btn_new = new UIImageAnimatedButton(192, 410, 96, 48,
         Assets.btn_new,
         () -> {
-          handler.getGame().gameState = new GameState(handler);
-          State.setState(handler.getGame().selectionState, handler);
+          handler.getGame().getStates().put(EState.GAME, new GameState(handler));
+          State selectionState = handler.getGame().getStates().get(EState.SELECTION);
+          State.setState(selectionState, handler);
           reset();
         });
 

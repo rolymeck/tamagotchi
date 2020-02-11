@@ -4,12 +4,13 @@ import java.awt.image.BufferedImage;
 
 public class Animation {
 
-  private int speed, index;
+  private int index;
+  private float frequency;
   private long lastTime, timer;
   private BufferedImage[] frames;
 
-  public Animation(int speed, BufferedImage[] frames) {
-    this.speed = speed;
+  public Animation(float frequency, BufferedImage[] frames) {
+    this.frequency = frequency;
     this.frames = frames;
     index = 0;
     timer = 0;
@@ -20,7 +21,7 @@ public class Animation {
     timer += System.currentTimeMillis() - lastTime;
     lastTime = System.currentTimeMillis();
 
-    if (timer > speed) {
+    if ((float) (timer / 1_000) > frequency) {
       index++;
       timer = 0;
       if (index >= frames.length)
