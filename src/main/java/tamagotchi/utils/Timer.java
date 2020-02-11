@@ -33,7 +33,7 @@ public class Timer {
 
     ticks++;
 
-    if (ticks >= Game.FPS) {
+    if (ticks >= Game.getFPS()) {
       count++;
       ticks = 0;
     }

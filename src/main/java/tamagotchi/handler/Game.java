@@ -12,7 +12,8 @@ import java.util.Map;
 
 public class Game implements Runnable {
 
-  public static final int FPS = 60;
+  private static final int FPS = 60;
+  private static Game currentGame;
 
   public String title;
 
@@ -22,12 +23,10 @@ public class Game implements Runnable {
   private int width, height;
   private boolean running = false;
   private Thread thread;
-  private BufferStrategy bufferStrategy;
-  private Graphics g;
 
   private MouseManager mouseManager;
 
-  private Handler handler;
+  private World world;
 
   public Game(String title, int width, int height) {
     this.width = width;
@@ -36,6 +35,7 @@ public class Game implements Runnable {
   }
 
   private void init() {
+    currentGame = this;
     display = new Display(title, width, height);
     mouseManager = new MouseManager();
     display.getFrame().addMouseListener(mouseManager);
@@ -45,16 +45,14 @@ public class Game implements Runnable {
 
     Assets.init();
 
-    handler = new Handler(this);
-
     states = new HashMap<>();
-    states.put(EState.GAME, new GameState(handler));
-    states.put(EState.SELECTION, new SelectionState(handler));
-    states.put(EState.DEATH, new DeathState(handler));
+    states.put(EState.GAME, new GameState());
+    states.put(EState.SELECTION, new SelectionState());
+    states.put(EState.DEATH, new DeathState());
 
     /*World world = SLManager.loadWorld();
     if (world == null) {*/
-      State.setState(states.get(EState.SELECTION), handler);
+    State.setState(getState(EState.SELECTION));
    /* } else {
       world.setHandler(handler);
       world.setEntityManager(new EntityManager(handler));
@@ -77,12 +75,12 @@ public class Game implements Runnable {
   }
 
   private void render() {
-    bufferStrategy = display.getCanvas().getBufferStrategy();
+    BufferStrategy bufferStrategy = display.getCanvas().getBufferStrategy();
     if (bufferStrategy == null) {
       display.getCanvas().createBufferStrategy(3);
       return;
     }
-    g = bufferStrategy.getDrawGraphics();
+    Graphics g = bufferStrategy.getDrawGraphics();
     //Clear Screen
     g.clearRect(0, 0, width, height);
     //Draw Here!
@@ -96,7 +94,6 @@ public class Game implements Runnable {
   }
 
   public void run() {
-
     init();
 
     //noinspection IntegerDivisionInFloatingPointContext
@@ -125,19 +122,12 @@ public class Game implements Runnable {
       if (timer >= 1_000_000_000) {
         double MHz = Math.rint(100.0 * hz / 1_000_000f) / 100.0;
         System.out.println("FPS: " + ticks + " MHz: " + MHz);
-        if (handler.getWorld().getPet() != null) {
-          //System.out.println("AGE: " + handler.getWorld().getPet().getValue(Stat.AGE) + " HPN: " + handler.getWorld().getPet().getValue(Stat.HAPPINESS) + " HNG: " + handler.getWorld().getPet().getValue(Stat.HUNGER) + " WST: " + handler.getWorld().getPet().getValue(Stat.WASTE));
-        }
         ticks = 0;
         timer = 0;
         hz = 0;
       }
     }
     stop();
-  }
-
-  public MouseManager getMouseManager() {
-    return mouseManager;
   }
 
   public int getWidth() {
@@ -167,8 +157,24 @@ public class Game implements Runnable {
     }
   }
 
-  public Map<EState, State> getStates() {
-    return states;
+  public State getState(EState eState) {
+    return states.get(eState);
+  }
+
+  public World getWorld() {
+    return world;
+  }
+
+  public void setWorld(World world) {
+    this.world = world;
+  }
+
+  public static int getFPS() {
+    return FPS;
+  }
+
+  public static Game getCurrentGame() {
+    return currentGame;
   }
 }
 

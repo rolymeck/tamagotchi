@@ -3,7 +3,7 @@ package tamagotchi.model.pet;
 import tamagotchi.gfx.Animation;
 import tamagotchi.gfx.AnimationPack;
 import tamagotchi.gfx.Assets;
-import tamagotchi.handler.Handler;
+import tamagotchi.handler.Game;
 import tamagotchi.handler.Stat;
 import tamagotchi.handler.World;
 import tamagotchi.model.entities.Food;
@@ -19,8 +19,6 @@ public abstract class Pet implements Serializable {
   public static final int DEFAULT_WIDTH = 64;
   public static final int DEFAULT_HEIGHT = 64;
   public static final float ANIMATION_SPEED = 0.5f;
-
-  protected transient Handler handler;
 
   protected float age; //ser
   protected Stage stage; //ser
@@ -44,10 +42,7 @@ public abstract class Pet implements Serializable {
   protected transient Animation animLeft;
   protected transient Animation animRight;
 
-  protected Pet() {}
-
-  protected Pet(Handler handler) {
-    this.handler = handler;
+  protected Pet() {
     this.moveTimer = new Timer(2);
 
     //tmp
@@ -73,8 +68,9 @@ public abstract class Pet implements Serializable {
 
     xMove = 0;
 
-    if (handler.getWorld().haveFood()) {
-      destination = (int) handler.getWorld().getFood().getX();
+    World world = Game.getCurrentGame().getWorld();
+    if (world.haveFood()) {
+      destination = (int) world.getFood().getX();
       actualDestination = true;
       moveTimer.reset();
     }
@@ -89,7 +85,7 @@ public abstract class Pet implements Serializable {
 
     if (!actualDestination && (!moveTimer.isStarted() || moveTimer.isFinished())) {
       System.out.println("RANDOM POINT WITHOUT FOOD");
-      destination = PointManager.getRandomX(handler);
+      destination = PointManager.getRandomX();
       actualDestination = true;
       moveTimer.reset();
     }
@@ -98,7 +94,7 @@ public abstract class Pet implements Serializable {
       xMove = x > destination ? -1 : 1;
     }
 
-    if (x == destination && handler.getWorld().haveFood()) {
+    if (x == destination && world.haveFood()) {
       feed();
       actualDestination = false;
       moveTimer.start();
@@ -145,7 +141,7 @@ public abstract class Pet implements Serializable {
   public void feed() {
     decrementValue(Stat.HUNGER, 50);
     incrementValue(Stat.WASTE, 10);
-    handler.getWorld().feed();
+    Game.getCurrentGame().getWorld().removeFood();
   }
 
   public void cleanUp() {
@@ -240,10 +236,6 @@ public abstract class Pet implements Serializable {
 
   public void setStage(Stage stage) {
     this.stage = stage;
-  }
-
-  public void setHandler(Handler handler) {
-    this.handler = handler;
   }
 
   public enum Stage {

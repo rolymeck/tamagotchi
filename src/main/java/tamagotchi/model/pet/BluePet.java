@@ -4,13 +4,11 @@ import tamagotchi.gfx.Animation;
 import tamagotchi.gfx.AnimationPack;
 import tamagotchi.gfx.AnimationStatic;
 import tamagotchi.gfx.Assets;
-import tamagotchi.handler.Handler;
 import tamagotchi.model.entities.Food;
 
 public class BluePet extends Pet {
 
-  public BluePet(Handler handler) {
-    super(handler);
+  public BluePet() {
 
     Animation animFrontS = new AnimationStatic(ANIMATION_SPEED, Assets.bluePetS_front);
     Animation animLeftS = new Animation(ANIMATION_SPEED, Assets.bluePetS_left);

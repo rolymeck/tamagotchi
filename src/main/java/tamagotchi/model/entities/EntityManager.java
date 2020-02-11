@@ -1,22 +1,15 @@
 package tamagotchi.model.entities;
 
-import tamagotchi.handler.Handler;
-
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class EntityManager {
 
-  private static final int FOOD_LIMIT = 1;
-  private static final int POOP_LIMIT = 5;
-
-  private Handler handler;
   private Food food;
   private List<Poop> poops;
 
-  public EntityManager(Handler handler) {
-    this.handler = handler;
+  public EntityManager() {
     this.poops = new ArrayList<>();
   }
 

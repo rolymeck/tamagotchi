@@ -21,7 +21,6 @@ public class World implements Serializable {
   private int period; //ser
   private Pet pet; //ser
   private long saveTime; //ser
-  private transient Handler handler;
   private transient EntityManager entityManager;
   private transient int updateTicks = 0;
   private transient int saveTicks = 0;
@@ -29,10 +28,9 @@ public class World implements Serializable {
   public World() {
   }
 
-  public World(Handler handler, int period) {
-    this.handler = handler;
+  public World(int period) {
     this.period = period;
-    this.entityManager = new EntityManager(handler);
+    this.entityManager = new EntityManager();
   }
 
   public void skip() {
@@ -40,7 +38,10 @@ public class World implements Serializable {
   }
 
   public void tick() {
-    pet.tick();
+    if (State.getState() == Game.getCurrentGame().getState(EState.GAME)) {
+      pet.tick();
+    }
+
     if (updateTicks < period) {
       updateTicks++;
     } else {
@@ -48,7 +49,7 @@ public class World implements Serializable {
       updateStats();
     }
 
-    if (saveTicks < Game.FPS) {
+    if (saveTicks < Game.getFPS()) {
       saveTicks++;
     } else {
       saveTicks = 0;
@@ -92,8 +93,8 @@ public class World implements Serializable {
 
     if (happinessIsMin) {
       pet.setStage(Pet.Stage.DEAD);
-      DeathState deathState = (DeathState) handler.getGame().getStates().get(EState.DEATH);
-      State.setState(deathState, handler);
+      DeathState deathState = (DeathState) Game.getCurrentGame().getState(EState.DEATH);
+      State.setState(deathState);
       deathState.getTimer().start();
       return;
     }
@@ -125,7 +126,7 @@ public class World implements Serializable {
     entityManager.removePoops();
   }
 
-  public void feed() {
+  public void removeFood() {
     entityManager.removeFood();
   }
 
@@ -147,14 +148,6 @@ public class World implements Serializable {
 
   public void setPet(Pet pet) {
     this.pet = pet;
-  }
-
-  public Handler getHandler() {
-    return handler;
-  }
-
-  public void setHandler(Handler handler) {
-    this.handler = handler;
   }
 
   public void setEntityManager(EntityManager entityManager) {

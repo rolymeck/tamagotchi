@@ -1,18 +1,14 @@
 package tamagotchi.ui;
 
-import tamagotchi.handler.Handler;
-
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 public class UIManager {
 
-  private Handler handler;
   private ArrayList<UIObject> objects;
 
-  public UIManager(Handler handler) {
-    this.handler = handler;
+  public UIManager() {
     objects = new ArrayList<>();
   }
 
@@ -42,14 +38,6 @@ public class UIManager {
 
   public void removeObject(UIObject o) {
     objects.remove(o);
-  }
-
-  public Handler getHandler() {
-    return handler;
-  }
-
-  public void setHandler(Handler handler) {
-    this.handler = handler;
   }
 
   public ArrayList<UIObject> getObjects() {

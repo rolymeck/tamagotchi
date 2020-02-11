@@ -1,6 +1,6 @@
 package tamagotchi.controller;
 
-import tamagotchi.ui.UIManager;
+import tamagotchi.states.State;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -10,13 +10,8 @@ public class MouseManager implements MouseListener, MouseMotionListener {
 
   private boolean leftPressed;
   private int mouseX, mouseY;
-  private UIManager uiManager;
 
   public MouseManager() {
-  }
-
-  public void setUIManager(UIManager uiManager) {
-    this.uiManager = uiManager;
   }
 
   // Getters
@@ -33,30 +28,26 @@ public class MouseManager implements MouseListener, MouseMotionListener {
     return mouseY;
   }
 
-  // Implemented methods
-
   @Override
   public void mousePressed(MouseEvent e) {
-    if (e.getButton() == MouseEvent.BUTTON1)
+    if (e.getButton() == MouseEvent.BUTTON1) {
       leftPressed = true;
+    }
   }
 
   @Override
   public void mouseReleased(MouseEvent e) {
-    if (e.getButton() == MouseEvent.BUTTON1)
+    if (e.getButton() == MouseEvent.BUTTON1) {
       leftPressed = false;
-
-    if (uiManager != null)
-      uiManager.onMouseRelease(e);
+    }
+    State.getState().getUiManager().onMouseRelease(e);
   }
 
   @Override
   public void mouseMoved(MouseEvent e) {
     mouseX = e.getX();
     mouseY = e.getY();
-
-    if (uiManager != null)
-      uiManager.onMouseMove(e);
+    State.getState().getUiManager().onMouseMove(e);
   }
 
   @Override
@@ -78,5 +69,4 @@ public class MouseManager implements MouseListener, MouseMotionListener {
   public void mouseExited(MouseEvent e) {
     // TODO Stub
   }
-
 }

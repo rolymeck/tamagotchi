@@ -2,7 +2,7 @@ package tamagotchi.states;
 
 import tamagotchi.gfx.Assets;
 import tamagotchi.gfx.Text;
-import tamagotchi.handler.Handler;
+import tamagotchi.handler.Game;
 import tamagotchi.handler.Stat;
 import tamagotchi.handler.World;
 import tamagotchi.ui.UIImageAnimatedButton;
@@ -18,8 +18,7 @@ public class DeathState extends State {
   private UIObject btn_new;
   private Timer timer;
 
-  public DeathState(Handler handler) {
-    super(handler);
+  public DeathState() {
     timer = new Timer(World.NEW_GAME_WAIT_SEC);
     initUI();
   }
@@ -38,13 +37,15 @@ public class DeathState extends State {
   @Override
   public void render(Graphics g) {
     uiManager.render(g);
-    Text.drawString(g, String.valueOf((int) handler.getWorld().getPet().getValue(Stat.AGE)), 254,
-        76, Color.BLACK, Assets.font34);
+
+    World world = Game.getCurrentGame().getWorld();
+    String age = String.valueOf((int) world.getPet().getValue(Stat.AGE));
+    Text.drawString(g, age, 254, 76, Color.BLACK, Assets.font34);
     if (!timer.isFinished()) {
       Text.drawString(g, String.format("You can create a new pet after %d s", timer.left()), 30,
           440, Color.BLACK, Assets.font20);
     }
-    handler.getWorld().render(g);
+    world.render(g);
   }
 
   private void initUI() {
@@ -56,9 +57,8 @@ public class DeathState extends State {
     btn_new = new UIImageAnimatedButton(192, 410, 96, 48,
         Assets.btn_new,
         () -> {
-          handler.getGame().getStates().put(EState.GAME, new GameState(handler));
-          State selectionState = handler.getGame().getStates().get(EState.SELECTION);
-          State.setState(selectionState, handler);
+          State selectionState = Game.getCurrentGame().getState(EState.SELECTION);
+          State.setState(selectionState);
           reset();
         });
 
@@ -70,7 +70,7 @@ public class DeathState extends State {
 
   private void reset() {
     timer.reset();
-    uiManager = new UIManager(handler);
+    uiManager = new UIManager();
     initUI();
   }
 }

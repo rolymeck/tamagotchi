@@ -10,7 +10,7 @@ public class Assets {
   public static Font font34, font20;
 
   public static BufferedImage mainScreen, selectionScreen, deathScreen;
-  public static BufferedImage greenPetSelectionTile, redPetSelectionTile, bluePetSelectionTile;
+  public static BufferedImage[] greenPetSelectionTile, redPetSelectionTile, bluePetSelectionTile;
   public static BufferedImage egg, grave, greenPetFood, redPetFood, bluePetFood, poop;
 
   public static BufferedImage[] btn_feed, btn_clean, btn_play, btn_new;
@@ -46,9 +46,17 @@ public class Assets {
     selectionScreen = ImageLoader.loadImage("/textures/SelectionScreen.png");
     deathScreen = ImageLoader.loadImage("/textures/DeathScreen.png");
 
-    greenPetSelectionTile = selTiles.crop(0, 0, WIDTH_UNIT * 4, HEIGHT_UNIT * 6);
-    redPetSelectionTile = selTiles.crop(WIDTH_UNIT * 4, 0, WIDTH_UNIT * 4, HEIGHT_UNIT * 6);
-    bluePetSelectionTile = selTiles.crop(WIDTH_UNIT * 8, 0, WIDTH_UNIT * 4, HEIGHT_UNIT * 6);
+    greenPetSelectionTile = new BufferedImage[2];
+    redPetSelectionTile = new BufferedImage[2];
+    bluePetSelectionTile = new BufferedImage[2];
+
+
+    greenPetSelectionTile[0] = selTiles.crop(0, 0, WIDTH_UNIT * 4, HEIGHT_UNIT * 6);
+    greenPetSelectionTile[1] = selTiles.crop(0, HEIGHT_UNIT * 6, WIDTH_UNIT * 4, HEIGHT_UNIT * 6);
+    redPetSelectionTile[0] = selTiles.crop(WIDTH_UNIT * 4, 0, WIDTH_UNIT * 4, HEIGHT_UNIT * 6);
+    redPetSelectionTile[1] = selTiles.crop(WIDTH_UNIT * 4, HEIGHT_UNIT * 6, WIDTH_UNIT * 4, HEIGHT_UNIT * 6);
+    bluePetSelectionTile[0] = selTiles.crop(WIDTH_UNIT * 8, 0, WIDTH_UNIT * 4, HEIGHT_UNIT * 6);
+    bluePetSelectionTile[1] = selTiles.crop(WIDTH_UNIT * 8, HEIGHT_UNIT * 6, WIDTH_UNIT * 4, HEIGHT_UNIT * 6);
 
     egg = sheet.crop(0, 0, WIDTH_UNIT, HEIGHT_UNIT);
     grave = sheet.crop(WIDTH_UNIT, 0, WIDTH_UNIT, HEIGHT_UNIT);
