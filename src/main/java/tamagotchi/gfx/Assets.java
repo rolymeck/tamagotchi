@@ -13,7 +13,9 @@ public class Assets {
   public static BufferedImage[] greenPetSelectionTile, redPetSelectionTile, bluePetSelectionTile;
   public static BufferedImage egg, grave, greenPetFood, redPetFood, bluePetFood, poop;
 
-  public static BufferedImage[] btn_feed, btn_clean, btn_play, btn_new;
+  public static BufferedImage bg1, bg2, bg3, bg4, bg5, scoreBar, grass, pipes;
+
+  public static BufferedImage[] btn_feed, btn_clean, btn_play, btn_new, btn_return;
 
   public static BufferedImage[] happinessBar, hungerBar, wasteBar;
 
@@ -41,6 +43,16 @@ public class Assets {
     SpriteSheet happinessBarSheet = new SpriteSheet(ImageLoader.loadImage("/textures/HappinessBar.png"));
     SpriteSheet hungerBarSheet = new SpriteSheet(ImageLoader.loadImage("/textures/HungerBar.png"));
     SpriteSheet wasteBarSheet = new SpriteSheet(ImageLoader.loadImage("/textures/WasteBar.png"));
+    SpriteSheet buttons = new SpriteSheet(ImageLoader.loadImage("/textures/Buttons.png"));
+
+    bg1 = ImageLoader.loadImage("/textures/BG1.png");
+    bg2 = ImageLoader.loadImage("/textures/BG2.png");
+    bg3 = ImageLoader.loadImage("/textures/BG3.png");
+    bg4 = ImageLoader.loadImage("/textures/BG4.png");
+    bg5 = ImageLoader.loadImage("/textures/BG5.png");
+    scoreBar = ImageLoader.loadImage("/textures/ScoreBar.png");
+    grass = ImageLoader.loadImage("/textures/Grass.png");
+    pipes = ImageLoader.loadImage("/textures/Pipes.png");
 
     mainScreen = ImageLoader.loadImage("/textures/MainScreen.png");
     selectionScreen = ImageLoader.loadImage("/textures/SelectionScreen.png");
@@ -69,15 +81,18 @@ public class Assets {
     btn_clean = new BufferedImage[2];
     btn_play = new BufferedImage[2];
     btn_new = new BufferedImage[2];
+    btn_return = new BufferedImage[2];
 
-    btn_feed[0] = sheet.crop(0, HEIGHT_UNIT, BTN_WIDTH, BTN_HEIGHT);
-    btn_feed[1] = sheet.crop(WIDTH_UNIT * 3, HEIGHT_UNIT, BTN_WIDTH, BTN_HEIGHT);
-    btn_clean[0] = sheet.crop(0, HEIGHT_UNIT * 3, BTN_WIDTH, BTN_HEIGHT);
-    btn_clean[1] = sheet.crop(WIDTH_UNIT * 3, HEIGHT_UNIT * 3, BTN_WIDTH, BTN_HEIGHT);
-    btn_play[0] = sheet.crop(0, HEIGHT_UNIT * 5, BTN_WIDTH, BTN_HEIGHT);
-    btn_play[1] = sheet.crop(WIDTH_UNIT * 3, HEIGHT_UNIT * 5, BTN_WIDTH, BTN_HEIGHT);
-    btn_new[0] = sheet.crop(0, HEIGHT_UNIT * 7, BTN_WIDTH, BTN_HEIGHT);
-    btn_new[1] = sheet.crop(WIDTH_UNIT * 3, HEIGHT_UNIT * 7, BTN_WIDTH, BTN_HEIGHT);
+    btn_feed[0] = buttons.crop(0, 0, BTN_WIDTH, BTN_HEIGHT);
+    btn_feed[1] = buttons.crop(BTN_WIDTH, 0, BTN_WIDTH, BTN_HEIGHT);
+    btn_clean[0] = buttons.crop(0, BTN_HEIGHT, BTN_WIDTH, BTN_HEIGHT);
+    btn_clean[1] = buttons.crop(BTN_WIDTH, BTN_HEIGHT, BTN_WIDTH, BTN_HEIGHT);
+    btn_play[0] = buttons.crop(0, BTN_HEIGHT * 2, BTN_WIDTH, BTN_HEIGHT);
+    btn_play[1] = buttons.crop(BTN_WIDTH, BTN_HEIGHT * 2, BTN_WIDTH, BTN_HEIGHT);
+    btn_new[0] = buttons.crop(0, BTN_HEIGHT * 3, BTN_WIDTH, BTN_HEIGHT);
+    btn_new[1] = buttons.crop(BTN_WIDTH, BTN_HEIGHT * 3, BTN_WIDTH, BTN_HEIGHT);
+    btn_return[0] = buttons.crop(0, BTN_HEIGHT * 4, BTN_WIDTH, BTN_HEIGHT);
+    btn_return[1] = buttons.crop(BTN_WIDTH, BTN_HEIGHT * 4, BTN_WIDTH, BTN_HEIGHT);
 
     happinessBar = new BufferedImage[11];
     hungerBar = new BufferedImage[11];

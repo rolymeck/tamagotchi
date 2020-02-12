@@ -10,16 +10,16 @@ public abstract class State {
   private static State currentState = null;
   protected UIManager uiManager;
 
-  public State() {
-    uiManager = new UIManager();
-  }
-
   public static State getState() {
     return currentState;
   }
 
   public static void setState(State state) {
     currentState = state;
+  }
+
+  public State() {
+    uiManager = new UIManager();
   }
 
   public abstract void tick();

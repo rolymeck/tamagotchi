@@ -1,4 +1,4 @@
-package tamagotchi.handler;
+package tamagotchi.game;
 
 import tamagotchi.controller.MouseManager;
 import tamagotchi.display.Display;
@@ -14,8 +14,14 @@ import java.util.Map;
 
 public class Game implements Runnable {
 
-  private static final int FPS = 60;
+  public static final int WIDTH = 480;
+  public static final int HEIGHT = 480;
+  public static final String TITLE = "TAMAGOTCHI";
+  public static final int FPS = 60;
   private static Game currentGame;
+  public static Game getCurrentGame() {
+    return currentGame;
+  }
 
   public String title;
 
@@ -30,18 +36,10 @@ public class Game implements Runnable {
 
   private World world;
 
-  public Game(String title, int width, int height) {
-    this.width = width;
-    this.height = height;
-    this.title = title;
-  }
-
-  public static int getFPS() {
-    return FPS;
-  }
-
-  public static Game getCurrentGame() {
-    return currentGame;
+  public Game() {
+    this.width = WIDTH;
+    this.height = HEIGHT;
+    this.title = TITLE;
   }
 
   private void init() {
@@ -67,7 +65,7 @@ public class Game implements Runnable {
       State.setState(getState(EState.SELECTION));
     } else {
       long timePassed = (int) ((System.currentTimeMillis() - world.getSaveTime()) / 1000);
-      float ticksPerSecond = ((float) getFPS() / World.PERIOD);
+      float ticksPerSecond = ((float) FPS / World.PERIOD);
       int amount = (int) (timePassed * ticksPerSecond);
       for (int i = 0; i < amount; i++) {
         world.updateStats();

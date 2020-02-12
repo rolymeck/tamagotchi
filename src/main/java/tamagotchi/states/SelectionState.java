@@ -1,8 +1,8 @@
 package tamagotchi.states;
 
 import tamagotchi.gfx.Assets;
-import tamagotchi.handler.Game;
-import tamagotchi.handler.World;
+import tamagotchi.game.Game;
+import tamagotchi.game.World;
 import tamagotchi.model.pet.BluePet;
 import tamagotchi.model.pet.GreenPet;
 import tamagotchi.model.pet.Pet;

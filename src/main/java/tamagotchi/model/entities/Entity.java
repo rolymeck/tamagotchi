@@ -1,6 +1,6 @@
 package tamagotchi.model.entities;
 
-import tamagotchi.handler.World;
+import tamagotchi.game.World;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

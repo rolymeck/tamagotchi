@@ -1,6 +1,6 @@
 package tamagotchi.io;
 
-import tamagotchi.handler.World;
+import tamagotchi.game.World;
 
 import java.io.*;
 

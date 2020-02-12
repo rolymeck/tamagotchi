@@ -2,9 +2,9 @@ package tamagotchi.states;
 
 import tamagotchi.gfx.Assets;
 import tamagotchi.gfx.Text;
-import tamagotchi.handler.Game;
-import tamagotchi.handler.Stat;
-import tamagotchi.handler.World;
+import tamagotchi.game.Game;
+import tamagotchi.game.Stat;
+import tamagotchi.game.World;
 import tamagotchi.ui.UIImageAnimatedButton;
 import tamagotchi.ui.UIManager;
 import tamagotchi.ui.UIObject;

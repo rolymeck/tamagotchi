@@ -1,4 +1,4 @@
-package tamagotchi.handler;
+package tamagotchi.game;
 
 public enum Stat {
 

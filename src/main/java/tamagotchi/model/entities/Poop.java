@@ -1,7 +1,7 @@
 package tamagotchi.model.entities;
 
 import tamagotchi.gfx.Assets;
-import tamagotchi.handler.World;
+import tamagotchi.game.World;
 
 import java.awt.*;
 

@@ -1,6 +1,6 @@
 package tamagotchi.utils;
 
-import tamagotchi.handler.Game;
+import tamagotchi.game.Game;
 
 public class Timer {
 

@@ -1,4 +1,4 @@
-package tamagotchi.handler;
+package tamagotchi.game;
 
 import tamagotchi.io.SLManager;
 import tamagotchi.model.entities.EntityManager;
@@ -19,7 +19,7 @@ public class World implements Externalizable {
   public static final int BORN_AGE = 5;
   public static final int FLOOR_Y = 370;
   public static final int NEW_GAME_WAIT_SEC = 20;
-  public static final int PERIOD = 30;
+  public static final int PERIOD = 100;
   private static final long serialVersionUID = 1L;
   private Pet pet; //ser
   private long saveTime; //ser
