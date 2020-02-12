@@ -20,9 +20,11 @@ public class World implements Externalizable {
   public static final int FLOOR_Y = 370;
   public static final int NEW_GAME_WAIT_SEC = 20;
   public static final int PERIOD = 100;
+
   private static final long serialVersionUID = 1L;
-  private Pet pet; //ser
-  private long saveTime; //ser
+
+  private Pet pet;
+  private long saveTime;
   private transient EntityManager entityManager;
   private transient int updateTicks = 0;
   private transient int saveTicks = 0;
@@ -43,7 +45,7 @@ public class World implements Externalizable {
       updateStats();
     }
 
-    if (saveTicks < Game.getFPS()) {
+    if (saveTicks < Game.FPS) {
       saveTicks++;
     } else {
       saveTicks = 0;

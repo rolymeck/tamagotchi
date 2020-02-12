@@ -12,7 +12,7 @@ public class Pipes {
 
   private static final int WIDTH = 39;
   private static final int HEIGHT = 615;
-  private static final float X_OFFSET = 1;
+  private static final float X_OFFSET = 2f;
 
   private List<Pipe> pipes;
 
@@ -29,6 +29,14 @@ public class Pipes {
       add(second);
       add(third);
     }};
+  }
+
+  public void tick() {
+    pipes.forEach(Pipe::tick);
+  }
+
+  public void render(Graphics g) {
+    pipes.forEach(pipe -> pipe.render(g));
   }
 
   private class Pipe {

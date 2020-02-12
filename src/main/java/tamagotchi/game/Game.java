@@ -52,6 +52,7 @@ public class Game implements Runnable {
     states.put(EState.GAME, new GameState());
     states.put(EState.SELECTION, new SelectionState());
     states.put(EState.DEATH, new DeathState());
+    states.put(EState.PLAY, new PlayState());
     State.setState(getState(EState.SELECTION));
 
     mouseManager = new MouseManager();

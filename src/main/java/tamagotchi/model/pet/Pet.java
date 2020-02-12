@@ -19,32 +19,28 @@ import java.io.ObjectOutput;
 public abstract class Pet implements Externalizable {
   public static final int SPAWN_X = 240;
   public static final float ANIMATION_SPEED = 0.5f;
+  
   private static final long serialVersionUID = 1L;
-  protected float age; //ser
-  protected Stage stage; //ser
-
-  protected float happiness; //ser
-  protected float hunger; //ser
-  protected float waste; //ser
+  
+  protected float age;
+  protected float happiness;
+  protected float hunger;
+  protected float waste;
+  protected Stage stage;
 
   protected transient float x;
-
   protected transient int destination;
   protected transient boolean actualDestination;
-  protected transient int xMove;
-  protected transient Timer moveTimer;
+  protected transient int velocity;
+  protected transient Timer sitTimer;
 
   protected transient Food food;
-
   protected transient AnimationPack animPack;
 
   protected Pet() {
-    this.moveTimer = new Timer(2);
-
-    //tmp
+    this.sitTimer = new Timer(2);
     this.x = SPAWN_X;
     this.destination = (int) x;
-
     this.happiness = Stat.HAPPINESS.getMax();
     this.hunger = Stat.HUNGER.getMin();
     this.waste = Stat.WASTE.getMin();
@@ -58,46 +54,46 @@ public abstract class Pet implements Externalizable {
 
     animPack.tick(stage);
 
-    xMove = 0;
+    velocity = 0;
 
     World world = Game.getCurrentGame().getWorld();
     if (world.haveFood()) {
       destination = (int) world.getFood().getX();
       actualDestination = true;
-      moveTimer.reset();
+      sitTimer.reset();
     }
 
-    if (moveTimer.isStarted()) {
-      moveTimer.tick();
+    if (sitTimer.isStarted()) {
+      sitTimer.tick();
     }
 
-    if (!actualDestination && moveTimer.isStarted() && !moveTimer.isFinished()) {
+    if (!actualDestination && sitTimer.isStarted() && !sitTimer.isFinished()) {
       return;
     }
 
-    if (!actualDestination && (!moveTimer.isStarted() || moveTimer.isFinished())) {
+    if (!actualDestination && (!sitTimer.isStarted() || sitTimer.isFinished())) {
       System.out.println("RANDOM POINT WITHOUT FOOD");
       destination = PointManager.getRandomX();
       actualDestination = true;
-      moveTimer.reset();
+      sitTimer.reset();
     }
 
     if (x != destination) {
-      xMove = x > destination ? -1 : 1;
+      velocity = x > destination ? -1 : 1;
     }
 
     if (x == destination && world.haveFood()) {
       feed();
       actualDestination = false;
-      moveTimer.start();
+      sitTimer.start();
     }
 
     if (x == destination && actualDestination) {
-      moveTimer.start();
+      sitTimer.start();
       actualDestination = false;
     }
 
-    x += xMove;
+    x += velocity;
 
   }
 
@@ -123,9 +119,9 @@ public abstract class Pet implements Externalizable {
   }
 
   private BufferedImage getCurrentAnimationFrame() {
-    if (xMove > 0) {
+    if (velocity > 0) {
       return animPack.getPack(stage).right().getCurrentFrame();
-    } else if (xMove < 0) {
+    } else if (velocity < 0) {
       return animPack.getPack(stage).left().getCurrentFrame();
     } else {
       return animPack.getPack(stage).front().getCurrentFrame();
@@ -268,7 +264,7 @@ public abstract class Pet implements Externalizable {
         ", x=" + x +
         ", destination=" + destination +
         ", actualDestination=" + actualDestination +
-        ", xMove=" + xMove +
+        ", xMove=" + velocity +
         ", food=" + food +
         ", animPack=" + animPack +
         '}';

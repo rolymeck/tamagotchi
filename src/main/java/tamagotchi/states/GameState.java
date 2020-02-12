@@ -69,7 +69,7 @@ public class GameState extends State {
     UIObject btn_play = new UIImageAnimatedButton(336, 410, 96, 48,
         Assets.btn_play,
         () -> {
-
+          State.setState(Game.getCurrentGame().getState(EState.PLAY));
         });
 
     UIObject hapBar = new UIBar(115, 53, 110, 22, Assets.happinessBar, Stat.HAPPINESS);

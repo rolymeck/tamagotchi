@@ -13,7 +13,7 @@ public class PointManager {
   }
 
   public static int getRandomY() {
-    return random.nextInt();
+    return random.nextInt(190) - 160;
   }
 
 }
