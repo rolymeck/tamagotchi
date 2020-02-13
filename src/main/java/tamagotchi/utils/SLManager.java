@@ -1,4 +1,4 @@
-package tamagotchi.io;
+package tamagotchi.utils;
 
 import tamagotchi.game.World;
 

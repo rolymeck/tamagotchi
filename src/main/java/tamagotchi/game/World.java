@@ -1,10 +1,10 @@
 package tamagotchi.game;
 
-import tamagotchi.io.SLManager;
-import tamagotchi.model.entities.EntityManager;
-import tamagotchi.model.entities.Food;
-import tamagotchi.model.entities.Poop;
-import tamagotchi.model.pet.Pet;
+import tamagotchi.utils.SLManager;
+import tamagotchi.entities.EntityManager;
+import tamagotchi.entities.Food;
+import tamagotchi.entities.Poop;
+import tamagotchi.pet.Pet;
 import tamagotchi.states.DeathState;
 import tamagotchi.states.EState;
 import tamagotchi.states.State;

@@ -1,6 +1,6 @@
 package tamagotchi.gfx;
 
-import tamagotchi.model.pet.Pet;
+import tamagotchi.pet.Pet;
 
 public class AnimationPack {
 

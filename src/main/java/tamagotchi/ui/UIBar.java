@@ -3,7 +3,7 @@ package tamagotchi.ui;
 import tamagotchi.game.Game;
 import tamagotchi.game.Stat;
 import tamagotchi.game.World;
-import tamagotchi.model.pet.Pet;
+import tamagotchi.pet.Pet;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

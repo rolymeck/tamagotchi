@@ -3,8 +3,8 @@ package tamagotchi.game;
 import tamagotchi.controller.MouseManager;
 import tamagotchi.display.Display;
 import tamagotchi.gfx.Assets;
-import tamagotchi.io.SLManager;
-import tamagotchi.model.pet.Pet;
+import tamagotchi.utils.SLManager;
+import tamagotchi.pet.Pet;
 import tamagotchi.states.*;
 
 import java.awt.*;

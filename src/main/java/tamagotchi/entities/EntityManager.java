@@ -1,4 +1,4 @@
-package tamagotchi.model.entities;
+package tamagotchi.entities;
 
 import java.awt.*;
 import java.util.ArrayList;

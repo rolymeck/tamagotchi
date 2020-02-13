@@ -1,10 +1,10 @@
-package tamagotchi.model.pet;
+package tamagotchi.pet;
 
 import tamagotchi.gfx.Animation;
 import tamagotchi.gfx.AnimationPack;
 import tamagotchi.gfx.AnimationStatic;
 import tamagotchi.gfx.Assets;
-import tamagotchi.model.entities.Food;
+import tamagotchi.entities.Food;
 
 public class RedPet extends Pet {
   private static final long serialVersionUID = 1L;

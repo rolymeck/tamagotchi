@@ -1,18 +1,19 @@
-package tamagotchi.model.entities;
+package tamagotchi.entities;
 
+import tamagotchi.gfx.Assets;
 import tamagotchi.game.World;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
-public class Food extends Entity {
+public class Poop extends Entity {
 
-  private static final int DEFAULT_WIDTH = 48, DEFAULT_HEIGHT = 48;
+  private static final int DEFAULT_WIDTH = 32, DEFAULT_HEIGHT = 32;
 
-  public Food(BufferedImage image) {
-    super(image);
+  public Poop(float x) {
+    super(Assets.poop);
     this.width = DEFAULT_WIDTH;
     this.height = DEFAULT_HEIGHT;
+    this.x = x;
   }
 
   @Override
@@ -23,6 +24,4 @@ public class Food extends Entity {
   @Override
   public void tick() {
   }
-
-
 }

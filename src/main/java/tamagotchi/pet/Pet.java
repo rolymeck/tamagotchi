@@ -1,11 +1,11 @@
-package tamagotchi.model.pet;
+package tamagotchi.pet;
 
 import tamagotchi.gfx.AnimationPack;
 import tamagotchi.gfx.Assets;
 import tamagotchi.game.Game;
 import tamagotchi.game.Stat;
 import tamagotchi.game.World;
-import tamagotchi.model.entities.Food;
+import tamagotchi.entities.Food;
 import tamagotchi.utils.PointManager;
 import tamagotchi.utils.Timer;
 
