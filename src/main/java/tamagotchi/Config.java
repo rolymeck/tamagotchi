@@ -14,7 +14,7 @@ public class Config {
 
   public static final int GAME_FLOOR_Y = 370;
 
-  public static final int WORLD_PERIOD = 100;
+  public static final int WORLD_PERIOD = 120;
   public static final int NEW_GAME_WAIT_SEC = 20;
 
   public static final float AGE_STEP = 0.33f;

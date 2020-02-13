@@ -34,8 +34,8 @@ public class Assets {
   public static BufferedImage[] bluePetL_left, bluePetL_right;
 
   public static void init() {
-    font34 = FontLoader.loadFont("res/fonts/KenneyMini.ttf", 34);
-    font20 = FontLoader.loadFont("res/fonts/KenneyMini.ttf", 20);
+    font34 = FontLoader.loadFont("src/main/resources/fonts/KenneyMini.ttf", 34);
+    font20 = FontLoader.loadFont("src/main/resources/fonts/KenneyMini.ttf", 20);
 
     SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/textures/Sheet.png"));
     SpriteSheet pets = new SpriteSheet(ImageLoader.loadImage("/textures/Pets.png"));
