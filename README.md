@@ -13,7 +13,7 @@ The game has the ability to feed a pet and clean up the world, as well as play.
 The pet has the parameters of hunger, waste and happiness.  
 If the parameters of hunger and waste are at maximum, happiness will begin to decrease, after which the pet will die.  
 The game state is maintained even after leaving the game.  
-***
+***  
 #Features of the implementation.
  The game was created using Java Swing.  
  Game parameters are in the Config.java file.  
@@ -26,7 +26,7 @@ The game state is maintained even after leaving the game.
  The values ​​of hunger, waste and happiness are represented by percentages from 0 to 100.  
  Also, in the Config.java file there are constants _AGE_STEP_, _HUNGER_STEP_, _WASTE_STEP_, _HAPPINESS_STEP_ which determine the magnitude of the change in the parameters of the pet in percent when updating its characteristics.  
  By changing these parameters together, you can adjust the necessary speed of change in the game world.  
- ***
+ ***  
  #Description of the application logic, packages and classes.
  A game is represented by an object of class **Game**.  
  The specified object stores a static link to itself in order to access it from **anywhere** in the code.  
