@@ -1,11 +1,12 @@
 package tamagotchi.pet;
 
-import tamagotchi.gfx.AnimationPack;
-import tamagotchi.gfx.Assets;
+import tamagotchi.Config;
+import tamagotchi.entities.Food;
 import tamagotchi.game.Game;
 import tamagotchi.game.Stat;
 import tamagotchi.game.World;
-import tamagotchi.entities.Food;
+import tamagotchi.gfx.AnimationPack;
+import tamagotchi.gfx.Assets;
 import tamagotchi.utils.PointManager;
 import tamagotchi.utils.Timer;
 
@@ -17,29 +18,25 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
 public abstract class Pet implements Externalizable {
-  public static final int SPAWN_X = 240;
-  public static final float ANIMATION_SPEED = 0.5f;
-  
   private static final long serialVersionUID = 1L;
-  
+
+  protected transient float x;
+  protected transient int destination;
+  protected transient boolean actualDestination;
+  protected transient float velocity;
+  protected transient Food food;
+  protected transient AnimationPack animPack;
+  protected final transient Timer sitTimer;
+
   protected float age;
   protected float happiness;
   protected float hunger;
   protected float waste;
   protected Stage stage;
 
-  protected transient float x;
-  protected transient int destination;
-  protected transient boolean actualDestination;
-  protected transient int velocity;
-  protected transient Timer sitTimer;
-
-  protected transient Food food;
-  protected transient AnimationPack animPack;
-
   protected Pet() {
-    this.sitTimer = new Timer(2);
-    this.x = SPAWN_X;
+    this.sitTimer = new Timer(Config.SIT_TIME);
+    this.x = Config.PET_SPAWN_X;
     this.destination = (int) x;
     this.happiness = Stat.HAPPINESS.getMax();
     this.hunger = Stat.HUNGER.getMin();
@@ -72,29 +69,24 @@ public abstract class Pet implements Externalizable {
     }
 
     if (!actualDestination && (!sitTimer.isStarted() || sitTimer.isFinished())) {
-      System.out.println("RANDOM POINT WITHOUT FOOD");
       destination = PointManager.getRandomX();
       actualDestination = true;
       sitTimer.reset();
     }
 
     if (x != destination) {
-      velocity = x > destination ? -1 : 1;
+      velocity = x > destination ? -Config.PET_VELOCITY : Config.PET_VELOCITY;
     }
 
-    if (x == destination && world.haveFood()) {
-      feed();
-      actualDestination = false;
-      sitTimer.start();
-    }
-
-    if (x == destination && actualDestination) {
+    if (x == destination && actualDestination){
+      if (world.haveFood()) {
+        feed();
+      }
       sitTimer.start();
       actualDestination = false;
     }
 
     x += velocity;
-
   }
 
   public void render(Graphics g) {
@@ -113,19 +105,9 @@ public abstract class Pet implements Externalizable {
     int width = getWidth();
     int height = getHeight();
     final int xPoint = (int) (x) - width / 2;
-    final int yPoint = World.FLOOR_Y - height;
+    final int yPoint = Config.GAME_FLOOR_Y - height;
 
     g.drawImage(image, xPoint, yPoint, width, height, null);
-  }
-
-  private BufferedImage getCurrentAnimationFrame() {
-    if (velocity > 0) {
-      return animPack.getPack(stage).right().getCurrentFrame();
-    } else if (velocity < 0) {
-      return animPack.getPack(stage).left().getCurrentFrame();
-    } else {
-      return animPack.getPack(stage).front().getCurrentFrame();
-    }
   }
 
   public void feed() {
@@ -197,28 +179,6 @@ public abstract class Pet implements Externalizable {
     stage = Stage.LARGE;
   }
 
-  private int getWidth() {
-    switch (stage) {
-      case MEDIUM:
-        return 96;
-      case LARGE:
-        return 128;
-      default:
-        return 64;
-    }
-  }
-
-  private int getHeight() {
-    switch (stage) {
-      case MEDIUM:
-        return 96;
-      case LARGE:
-        return 128;
-      default:
-        return 64;
-    }
-  }
-
   @Override
   public void writeExternal(ObjectOutput out) throws IOException {
     out.writeFloat(age);
@@ -253,24 +213,39 @@ public abstract class Pet implements Externalizable {
     this.stage = stage;
   }
 
-  @Override
-  public String toString() {
-    return "Pet{" +
-        "age=" + age +
-        ", stage=" + stage +
-        ", happiness=" + happiness +
-        ", hunger=" + hunger +
-        ", waste=" + waste +
-        ", x=" + x +
-        ", destination=" + destination +
-        ", actualDestination=" + actualDestination +
-        ", xMove=" + velocity +
-        ", food=" + food +
-        ", animPack=" + animPack +
-        '}';
-  }
-
   public enum Stage {
     BORN, SMALL, MEDIUM, LARGE, DEAD
+  }
+
+  private BufferedImage getCurrentAnimationFrame() {
+    if (velocity > 0) {
+      return animPack.getPack(stage).right().getCurrentFrame();
+    } else if (velocity < 0) {
+      return animPack.getPack(stage).left().getCurrentFrame();
+    } else {
+      return animPack.getPack(stage).front().getCurrentFrame();
+    }
+  }
+
+  private int getWidth() {
+    switch (stage) {
+      case MEDIUM:
+        return Config.PET_MEDIUM_WIDTH;
+      case LARGE:
+        return Config.PET_LARGE_WIDTH;
+      default:
+        return Config.PET_STD_WIDTH;
+    }
+  }
+
+  private int getHeight() {
+    switch (stage) {
+      case MEDIUM:
+        return Config.PET_MEDIUM_HEIGHT;
+      case LARGE:
+        return Config.PET_LARGE_HEIGHT;
+      default:
+        return Config.PET_STD_HEIGHT;
+    }
   }
 }

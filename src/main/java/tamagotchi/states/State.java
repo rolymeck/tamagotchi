@@ -8,7 +8,6 @@ import java.awt.*;
 public abstract class State {
 
   private static State currentState = null;
-  protected UIManager uiManager;
 
   public static State getState() {
     return currentState;
@@ -17,6 +16,9 @@ public abstract class State {
   public static void setState(State state) {
     currentState = state;
   }
+
+
+  protected UIManager uiManager;
 
   public State() {
     uiManager = new UIManager();

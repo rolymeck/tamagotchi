@@ -4,26 +4,14 @@ import tamagotchi.pet.Pet;
 
 public class AnimationPack {
 
-  private Size small;
-  private Size medium;
-  private Size large;
+  private final Size small;
+  private final Size medium;
+  private final Size large;
 
   public AnimationPack(Size small, Size medium, Size large) {
     this.small = small;
     this.medium = medium;
     this.large = large;
-  }
-
-  public Size small() {
-    return this.small;
-  }
-
-  public Size medium() {
-    return this.medium;
-  }
-
-  public Size large() {
-    return this.large;
   }
 
   public void tick(Pet.Stage stage) {
@@ -39,10 +27,6 @@ public class AnimationPack {
     }
   }
 
-  public void render() {
-
-  }
-
   public Size getPack(Pet.Stage stage) {
     switch (stage) {
       case SMALL:
@@ -56,9 +40,9 @@ public class AnimationPack {
   }
 
   public static class Size {
-    private Animation front;
-    private Animation left;
-    private Animation right;
+    private final Animation front;
+    private final Animation left;
+    private final Animation right;
 
     public Size(Animation front, Animation left, Animation right) {
       this.front = front;

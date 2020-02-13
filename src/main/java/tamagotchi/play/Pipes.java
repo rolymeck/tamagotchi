@@ -1,5 +1,6 @@
 package tamagotchi.play;
 
+import tamagotchi.Config;
 import tamagotchi.gfx.Assets;
 import tamagotchi.utils.PointManager;
 
@@ -10,17 +11,13 @@ import java.util.List;
 
 public class Pipes {
 
-  private static final int WIDTH = 39;
-  private static final int HEIGHT = 615;
-  private static final float X_OFFSET = 2f;
-
-  private List<Pipe> pipes;
+  private final List<Pipe> pipes;
   private int score;
 
   public Pipes() {
-    Pipe first = new Pipe(480, PointManager.getRandomY());
-    Pipe second = new Pipe(480 + 186, PointManager.getRandomY());
-    Pipe third = new Pipe(480 + 186 + 186, PointManager.getRandomY());
+    Pipe first = new Pipe(Config.DISPLAY_WIDTH, PointManager.getRandomY());
+    Pipe second = new Pipe(Config.DISPLAY_WIDTH + Config.PIPES_HOR_INTERVAL, PointManager.getRandomY());
+    Pipe third = new Pipe(Config.DISPLAY_WIDTH + Config.PIPES_HOR_INTERVAL * 2, PointManager.getRandomY());
     first.setPrev(third);
     second.setPrev(first);
     third.setPrev(second);
@@ -41,9 +38,9 @@ public class Pipes {
   }
 
   public void reset() {
-    pipes.get(0).setX(480);
-    pipes.get(1).setX(480 + 186);
-    pipes.get(2).setX(480 + 186 + 186);
+    pipes.get(0).setX(Config.DISPLAY_WIDTH);
+    pipes.get(1).setX(Config.DISPLAY_WIDTH + Config.PIPES_HOR_INTERVAL);
+    pipes.get(2).setX(Config.DISPLAY_WIDTH + Config.PIPES_HOR_INTERVAL * 2);
 
     pipes.forEach(pipe -> pipe.setY(PointManager.getRandomY()));
     pipes.forEach(Pipe::updateBounds);
@@ -72,25 +69,26 @@ public class Pipes {
       this.x = x;
       this.y = y;
       bounds = new ArrayList<>() {{
-        add(new Rectangle(x, y, WIDTH, 240));
-        add(new Rectangle(x, y + 378, WIDTH, 240));
+        add(new Rectangle(x, y, Config.PIPES_WIDTH, Config.ONE_PIPE_HEIGHT));
+        add(new Rectangle(x, y + Config.PIPES_VER_INTERVAL, Config.PIPES_WIDTH, Config.ONE_PIPE_HEIGHT));
       }};
 
     }
 
     public void tick() {
-      x -= X_OFFSET;
+      x -= Config.PIPES_X_OFFSET;
       bounds.forEach((b) -> b.x = (int) x);
-      if (x + WIDTH <= 0) {
-        x = prev.getX() + 186;
-        bounds.forEach((b) -> b.x = (int) x);
+      if (x + Config.PIPES_WIDTH <= 0) {
+        x = prev.getX() + Config.PIPES_HOR_INTERVAL;
+        //bounds.forEach((b) -> b.x = (int) x);
         y = PointManager.getRandomY();
-        bounds.get(0).y = y;
-        bounds.get(1).y = y + 378;
+        //bounds.get(0).y = y;
+        //bounds.get(1).y = y + Config.PIPES_VER_INTERVAL;
+        updateBounds();
         stocked = false;
         return;
       }
-      if (x < 95 && !stocked) {
+      if (x < Config.SCORE_PLUS_X && !stocked) {
         score++;
         stocked = true;
       }
@@ -98,7 +96,17 @@ public class Pipes {
     }
 
     public void render(Graphics g) {
-      g.drawImage(image, (int) x, y, WIDTH, HEIGHT, null);
+      g.drawImage(image, (int) x, y, Config.PIPES_WIDTH, Config.PIPES_HEIGHT, null);
+    }
+
+    public boolean checkCollision(List<Rectangle> player) {
+      boolean up = player.stream().anyMatch((b) -> b.intersects(bounds.get(0)));
+      boolean down = player.stream().anyMatch((b) -> b.intersects(bounds.get(1)));
+      return up || down;
+    }
+
+    public void setPrev(Pipe prev) {
+      this.prev = prev;
     }
 
     public float getX() {
@@ -113,20 +121,10 @@ public class Pipes {
       this.y = y;
     }
 
-    public void setPrev(Pipe prev) {
-      this.prev = prev;
-    }
-
-    public boolean checkCollision(List<Rectangle> player) {
-      boolean up = player.stream().anyMatch((b) -> b.intersects(bounds.get(0)));
-      boolean down = player.stream().anyMatch((b) -> b.intersects(bounds.get(1)));
-      return up || down;
-    }
-
     private void updateBounds() {
       bounds = new ArrayList<>() {{
-        add(new Rectangle((int) x, y, WIDTH, 240));
-        add(new Rectangle((int) x, y + 378, WIDTH, 240));
+        add(new Rectangle((int) x, y, Config.PIPES_WIDTH, Config.ONE_PIPE_HEIGHT));
+        add(new Rectangle((int) x, y + Config.PIPES_VER_INTERVAL, Config.PIPES_WIDTH, Config.ONE_PIPE_HEIGHT));
       }};
     }
   }

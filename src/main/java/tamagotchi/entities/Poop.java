@@ -1,27 +1,22 @@
 package tamagotchi.entities;
 
 import tamagotchi.gfx.Assets;
-import tamagotchi.game.World;
+import tamagotchi.Config;
 
 import java.awt.*;
 
 public class Poop extends Entity {
 
-  private static final int DEFAULT_WIDTH = 32, DEFAULT_HEIGHT = 32;
-
-  public Poop(float x) {
+  public Poop(final float x) {
     super(Assets.poop);
-    this.width = DEFAULT_WIDTH;
-    this.height = DEFAULT_HEIGHT;
+    this.width = Config.POOP_WIDTH;
+    this.height = Config.POOP_HEIGHT;
     this.x = x;
   }
 
-  @Override
-  public void render(Graphics g) {
-    g.drawImage(image, (int) (x) - width / 2, World.FLOOR_Y - height, width, height, null);
-  }
-
-  @Override
-  public void tick() {
+  public void render(final Graphics g) {
+    int x = (int) this.x - width / 2;
+    int y = Config.GAME_FLOOR_Y - height;
+    g.drawImage(image, x, y, width, height, null);
   }
 }

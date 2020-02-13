@@ -1,20 +1,22 @@
 package tamagotchi.entities;
 
+import tamagotchi.Config;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class EntityManager {
 
+  private final List<Poop> poops;
   private Food food;
-  private List<Poop> poops;
 
   public EntityManager() {
     this.poops = new ArrayList<>();
   }
 
-  public void addPoop(Poop poop) {
-    if (poops.size() < 5) {
+  public void addPoop(final Poop poop) {
+    if (poops.size() <= Config.POOPS_MAX_AMOUNT) {
       poops.add(poop);
     }
   }
@@ -23,7 +25,7 @@ public class EntityManager {
     poops.clear();
   }
 
-  public void addFood(Food food) {
+  public void addFood(final Food food) {
     if (this.food != null) {
       return;
     }
@@ -34,8 +36,7 @@ public class EntityManager {
     this.food = null;
   }
 
-
-  public void render(Graphics g) {
+  public void render(final Graphics g) {
     poops.forEach(poop -> poop.render(g));
     if (food != null) {
       food.render(g);

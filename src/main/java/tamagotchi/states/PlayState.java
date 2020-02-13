@@ -17,10 +17,10 @@ import java.util.List;
 
 public class PlayState extends State {
 
-  private List<Sprite> background;
-  private Sprite grass;
-  private Pipes pipes;
-  private Player player;
+  private final List<Sprite> background;
+  private final Sprite grass;
+  private final Pipes pipes;
+  private final Player player;
   private boolean started, finished;
   private UIObject btn_new, btn_return, mouseListener;
 
@@ -68,6 +68,10 @@ public class PlayState extends State {
     uiManager.render(g);
   }
 
+  public Pipes getPipes() {
+    return pipes;
+  }
+
   private void initUI() {
     UIObject scoreBar = new UIScoreBar(this);
 
@@ -105,9 +109,5 @@ public class PlayState extends State {
 
   private boolean checkCollision() {
     return pipes.checkCollision(player.getBounds());
-  }
-
-  public Pipes getPipes() {
-    return pipes;
   }
 }

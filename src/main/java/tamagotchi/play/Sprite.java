@@ -1,6 +1,6 @@
 package tamagotchi.play;
 
-import tamagotchi.game.Game;
+import tamagotchi.Config;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -8,12 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Sprite {
-  private List<Frame> frames;
+  private final List<Frame> frames;
 
   public Sprite(BufferedImage image, int y, int height, float xOffset) {
     frames = new ArrayList<>() {{
-      add(new Frame(image, 0, y, Game.WIDTH, height, xOffset));
-      add(new Frame(image, Game.WIDTH, y, Game.WIDTH, height, xOffset));
+      add(new Frame(image, 0, y, Config.DISPLAY_WIDTH, height, xOffset));
+      add(new Frame(image, Config.DISPLAY_WIDTH, y, Config.DISPLAY_WIDTH, height, xOffset));
     }};
   }
 
@@ -27,16 +27,16 @@ public class Sprite {
 
   public void reset() {
     frames.get(0).setX(0);
-    frames.get(1).setX(Game.WIDTH);
+    frames.get(1).setX(Config.DISPLAY_WIDTH);
   }
 
   private class Frame {
 
     private final BufferedImage image;
-    private float x;
     private final int y;
     private final int width, height;
     private final float xOffset;
+    private float x;
 
     public Frame(BufferedImage image, float x, int y, int width, int height, float xOffset) {
       this.image = image;

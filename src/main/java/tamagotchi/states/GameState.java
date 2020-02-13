@@ -1,11 +1,11 @@
 package tamagotchi.states;
 
-import tamagotchi.gfx.Assets;
-import tamagotchi.gfx.Text;
+import tamagotchi.entities.Food;
 import tamagotchi.game.Game;
 import tamagotchi.game.Stat;
 import tamagotchi.game.World;
-import tamagotchi.entities.Food;
+import tamagotchi.gfx.Assets;
+import tamagotchi.gfx.Text;
 import tamagotchi.pet.Pet;
 import tamagotchi.ui.UIBar;
 import tamagotchi.ui.UIImageButton;

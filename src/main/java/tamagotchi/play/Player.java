@@ -1,5 +1,6 @@
 package tamagotchi.play;
 
+import tamagotchi.Config;
 import tamagotchi.gfx.Assets;
 
 import java.awt.*;
@@ -8,40 +9,37 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
-  private static final int WIDTH = 36;
-  private static final int HEIGHT = 36;
-  private static final int X = 120;
-  private static final int SPAWN_Y = 220;
-  private static final float MAX_VELOCITY = 7;
-  private static final float ACC = 0.5f;
 
   private final BufferedImage image;
-
+  private final Bounds bounds;
   private float y;
   private float velocity;
-  private Bounds bounds;
-
   private boolean clicked;
 
   public Player() {
     image = Assets.poop;
-    y = SPAWN_Y;
+    y = Config.PLAYER_SPAWN_Y;
     bounds = new Bounds();
   }
 
   public void tick() {
     if (clicked) {
-      velocity = -7;
+      velocity = Config.PLAYER_JUMP_VELOCITY;
       clicked = false;
       return;
     }
-    velocity = Math.min(velocity + ACC, MAX_VELOCITY);
+    velocity = Math.min(velocity + Config.PLAYER_ACC, Config.PLAYER_MAX_VELOCITY);
     y += velocity;
     updateBounds();
   }
 
   public void render(Graphics g) {
-    g.drawImage(image, X, (int) y, WIDTH, HEIGHT, null);
+    g.drawImage(image,
+        Config.PLAYER_SPAWN_X,
+        (int) y,
+        Config.PLAYER_WIDTH,
+        Config.PLAYER_HEIGHT,
+        null);
   }
 
   public void setClicked(boolean clicked) {
@@ -49,14 +47,10 @@ public class Player {
   }
 
   public void reset() {
-    y = SPAWN_Y;
+    y = Config.PLAYER_SPAWN_Y;
     velocity = 0;
     clicked = false;
     updateBounds();
-  }
-
-  private void updateBounds() {
-    bounds.update();
   }
 
   public List<Rectangle> getBounds() {
@@ -67,16 +61,21 @@ public class Player {
     return y;
   }
 
+  private void updateBounds() {
+    bounds.update();
+  }
+
   private class Bounds {
-    private List<Rectangle> bounds;
+    private final List<Rectangle> bounds;
 
     public Bounds() {
-      Rectangle b1 = new Rectangle(X, (int) y + 26, WIDTH, 10);
-      Rectangle b2 = new Rectangle(X + 4, (int) y + 19, 28, 7);
-      Rectangle b3 = new Rectangle(X + 8, (int) y + 13, 20, 6);
-      Rectangle b4 = new Rectangle(X + 11, (int) y + 9, 15, 4);
-      Rectangle b5 = new Rectangle(X + 12, (int) y + 3, 8, 6);
-      bounds = new ArrayList<>(){{
+      int x = Config.PLAYER_SPAWN_X;
+      Rectangle b1 = new Rectangle(x, (int) y + 26, Config.PLAYER_WIDTH, 10);
+      Rectangle b2 = new Rectangle(x + 4, (int) y + 19, 28, 7);
+      Rectangle b3 = new Rectangle(x + 8, (int) y + 13, 20, 6);
+      Rectangle b4 = new Rectangle(x + 11, (int) y + 9, 15, 4);
+      Rectangle b5 = new Rectangle(x + 12, (int) y + 3, 8, 6);
+      bounds = new ArrayList<>() {{
         add(b1);
         add(b2);
         add(b3);

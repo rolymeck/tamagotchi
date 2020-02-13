@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 
 public class AnimationStatic extends Animation {
 
-  private BufferedImage image;
+  private final BufferedImage image;
 
   public AnimationStatic(float frequency, BufferedImage image) {
     super(frequency, null);

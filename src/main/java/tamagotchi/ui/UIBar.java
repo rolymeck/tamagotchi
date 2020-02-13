@@ -10,8 +10,8 @@ import java.awt.image.BufferedImage;
 
 public class UIBar extends UIObject {
 
-  private BufferedImage[] images;
-  private Stat stat;
+  private final BufferedImage[] images;
+  private final Stat stat;
   private int size = 0;
 
   public UIBar(float x, float y, int width, int height, BufferedImage[] images, Stat stat) {

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class UIManager {
 
-  private ArrayList<UIObject> objects;
+  private final ArrayList<UIObject> objects;
 
   public UIManager() {
     objects = new ArrayList<>();
@@ -39,13 +39,4 @@ public class UIManager {
   public void removeObject(UIObject o) {
     objects.remove(o);
   }
-
-  public ArrayList<UIObject> getObjects() {
-    return objects;
-  }
-
-  public void setObjects(ArrayList<UIObject> objects) {
-    this.objects = objects;
-  }
-
 }

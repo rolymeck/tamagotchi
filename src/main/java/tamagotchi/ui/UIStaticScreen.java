@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 
 public class UIStaticScreen extends UIObject {
 
-  private BufferedImage image;
+  private final BufferedImage image;
 
   public UIStaticScreen(float x, float y, int width, int height, BufferedImage image) {
     super(x, y, width, height);

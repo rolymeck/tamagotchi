@@ -1,10 +1,11 @@
 package tamagotchi.states;
 
-import tamagotchi.gfx.Assets;
-import tamagotchi.gfx.Text;
+import tamagotchi.Config;
 import tamagotchi.game.Game;
 import tamagotchi.game.Stat;
 import tamagotchi.game.World;
+import tamagotchi.gfx.Assets;
+import tamagotchi.gfx.Text;
 import tamagotchi.ui.UIImageButton;
 import tamagotchi.ui.UIManager;
 import tamagotchi.ui.UIObject;
@@ -15,11 +16,11 @@ import java.awt.*;
 
 public class DeathState extends State {
 
+  private final Timer timer;
   private UIObject btn_new;
-  private Timer timer;
 
   public DeathState() {
-    timer = new Timer(World.NEW_GAME_WAIT_SEC);
+    timer = new Timer(Config.NEW_GAME_WAIT_SEC);
     initUI();
   }
 
@@ -48,8 +49,12 @@ public class DeathState extends State {
     world.render(g);
   }
 
+  public Timer getTimer() {
+    return timer;
+  }
+
   private void initUI() {
-    UIObject deathScreen = new UIStaticScreen(0, 0, 480, 480,
+    UIObject deathScreen = new UIStaticScreen(0, 0, Config.DISPLAY_WIDTH, Config.DISPLAY_HEIGHT,
         Assets.deathScreen);
 
     uiManager.addObject(deathScreen);
@@ -62,10 +67,6 @@ public class DeathState extends State {
           reset();
         });
 
-  }
-
-  public Timer getTimer() {
-    return timer;
   }
 
   private void reset() {

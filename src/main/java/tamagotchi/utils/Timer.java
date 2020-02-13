@@ -4,7 +4,7 @@ import tamagotchi.game.Game;
 
 public class Timer {
 
-  private long duration;
+  private final long duration;
   private long count;
   private boolean started;
   private boolean finished;

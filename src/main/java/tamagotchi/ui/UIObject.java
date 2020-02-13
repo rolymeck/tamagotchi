@@ -5,9 +5,11 @@ import java.awt.event.MouseEvent;
 
 public abstract class UIObject {
 
-  protected float x, y;
-  protected int width, height;
-  protected Rectangle bounds;
+  protected final float y;
+  protected final int width;
+  protected final int height;
+  protected final Rectangle bounds;
+  protected final float x;
   protected boolean hovering = false;
 
   public UIObject(float x, float y, int width, int height) {
@@ -32,47 +34,4 @@ public abstract class UIObject {
     if (hovering)
       onClick();
   }
-
-  // Getters and setters
-
-  public float getX() {
-    return x;
-  }
-
-  public void setX(float x) {
-    this.x = x;
-  }
-
-  public float getY() {
-    return y;
-  }
-
-  public void setY(float y) {
-    this.y = y;
-  }
-
-  public int getWidth() {
-    return width;
-  }
-
-  public void setWidth(int width) {
-    this.width = width;
-  }
-
-  public int getHeight() {
-    return height;
-  }
-
-  public void setHeight(int height) {
-    this.height = height;
-  }
-
-  public boolean isHovering() {
-    return hovering;
-  }
-
-  public void setHovering(boolean hovering) {
-    this.hovering = hovering;
-  }
-
 }

@@ -1,6 +1,6 @@
 package tamagotchi.ui;
 
-import tamagotchi.game.Game;
+import tamagotchi.Config;
 
 import java.awt.*;
 
@@ -9,7 +9,7 @@ public class UIMouseListener extends UIObject {
   private final ClickListener clicker;
 
   public UIMouseListener(ClickListener clicker) {
-    super(0, 0, Game.WIDTH, Game.HEIGHT);
+    super(0, 0, Config.DISPLAY_WIDTH, Config.DISPLAY_WIDTH);
     this.clicker = clicker;
   }
 

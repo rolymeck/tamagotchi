@@ -4,10 +4,10 @@ import java.awt.image.BufferedImage;
 
 public class Animation {
 
+  private final float frequency;
+  private final BufferedImage[] frames;
   private int index;
-  private float frequency;
   private long lastTime, timer;
-  private BufferedImage[] frames;
 
   public Animation(float frequency, BufferedImage[] frames) {
     this.frequency = frequency;
