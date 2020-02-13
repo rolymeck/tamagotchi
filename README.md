@@ -17,7 +17,7 @@ If the parameters of hunger and waste are at maximum, happiness will begin to de
 The game state is maintained even after leaving the game.  
 ***  
 
-#Features of the implementation.  
+# Features of the implementation.  
  The game was created using Java Swing.  
  Game parameters are in the Config.java file.  
  It is not recommended to change game parameters except _WORLD_PERIOD_ and _NEW_GAME_WAIT_SEC_.  
@@ -31,7 +31,7 @@ The game state is maintained even after leaving the game.
  By changing these parameters together, you can adjust the necessary speed of change in the game world.  
  ***  
  
- #Description of the application logic, packages and classes.  
+ # Description of the application logic, packages and classes.  
  A game is represented by an object of class **Game**.  
  The specified object stores a static link to itself in order to access it from **anywhere** in the code.  
  The execution of the code of the object of the Game class takes place in a **separate** thread, in which all the necessary resources (mainly graphic elements - sprites) are **initialized** into RAM, after which the object goes into an **endless** loop acting as an **FPS synchronizer**.  
