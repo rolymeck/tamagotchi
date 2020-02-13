@@ -1,3 +1,7 @@
+# Requirements
+- JDK version 9 or higher
+- Maven
+
 # Install
 1. `git clone https://github.com/rolymeck/tamagotchi.git`
 2. `cd tamagotchi`
