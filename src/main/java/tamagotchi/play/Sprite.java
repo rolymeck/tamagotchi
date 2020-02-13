@@ -25,9 +25,14 @@ public class Sprite {
     frames.forEach(frame -> frame.render(g));
   }
 
+  public void reset() {
+    frames.get(0).setX(0);
+    frames.get(1).setX(Game.WIDTH);
+  }
+
   private class Frame {
 
-    private BufferedImage image;
+    private final BufferedImage image;
     private float x;
     private final int y;
     private final int width, height;
@@ -51,6 +56,10 @@ public class Sprite {
 
     public void render(Graphics g) {
       g.drawImage(image, (int) x, y, width, height, null);
+    }
+
+    public void setX(float x) {
+      this.x = x;
     }
   }
 }

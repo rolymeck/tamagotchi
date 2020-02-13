@@ -7,12 +7,12 @@ import tamagotchi.states.PlayState;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class ScoreBar extends UIObject {
+public class UIScoreBar extends UIObject {
 
   private final PlayState playState;
   private final BufferedImage image;
 
-  public ScoreBar(PlayState playState) {
+  public UIScoreBar(PlayState playState) {
     super(0, 0, 480, 48);
     this.playState = playState;
     this.image = Assets.scoreBar;
@@ -25,7 +25,7 @@ public class ScoreBar extends UIObject {
   @Override
   public void render(Graphics g) {
     g.drawImage(image, (int) x, (int) y, width, height, null);
-    Text.drawString(g, String.valueOf(playState.getScore()), 155,
+    Text.drawString(g, String.valueOf(playState.getPipes().getScore()), 155,
         35, Color.BLACK, Assets.font34);
   }
 

@@ -179,6 +179,10 @@ public class Game implements Runnable {
   public void setWorld(World world) {
     this.world = world;
   }
+
+  public void newPlayState() {
+    states.put(EState.PLAY, new PlayState());
+  }
 }
 
 

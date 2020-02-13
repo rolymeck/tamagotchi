@@ -8,7 +8,7 @@ import tamagotchi.game.World;
 import tamagotchi.model.entities.Food;
 import tamagotchi.model.pet.Pet;
 import tamagotchi.ui.UIBar;
-import tamagotchi.ui.UIImageAnimatedButton;
+import tamagotchi.ui.UIImageButton;
 import tamagotchi.ui.UIObject;
 import tamagotchi.ui.UIStaticScreen;
 import tamagotchi.utils.PointManager;
@@ -42,7 +42,7 @@ public class GameState extends State {
     UIObject mainScreen = new UIStaticScreen(0, 0, 480, 480,
         Assets.mainScreen);
 
-    UIObject btn_feed = new UIImageAnimatedButton(48, 410, 96, 48,
+    UIObject btn_feed = new UIImageButton(48, 410, 96, 48,
         Assets.btn_feed,
         () -> {
           World world = Game.getCurrentGame().getWorld();
@@ -55,7 +55,7 @@ public class GameState extends State {
           world.setFood(food);
         });
 
-    UIObject btn_clean = new UIImageAnimatedButton(192, 410, 96, 48,
+    UIObject btn_clean = new UIImageButton(192, 410, 96, 48,
         Assets.btn_clean,
         () -> {
           World world = Game.getCurrentGame().getWorld();
@@ -66,9 +66,10 @@ public class GameState extends State {
           world.getPet().cleanUp();
         });
 
-    UIObject btn_play = new UIImageAnimatedButton(336, 410, 96, 48,
+    UIObject btn_play = new UIImageButton(336, 410, 96, 48,
         Assets.btn_play,
         () -> {
+          Game.getCurrentGame().newPlayState();
           State.setState(Game.getCurrentGame().getState(EState.PLAY));
         });
 

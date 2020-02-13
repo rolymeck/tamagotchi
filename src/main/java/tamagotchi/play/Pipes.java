@@ -15,11 +15,12 @@ public class Pipes {
   private static final float X_OFFSET = 2f;
 
   private List<Pipe> pipes;
+  private int score;
 
   public Pipes() {
-    Pipe first = new Pipe(480, PointManager.getRandomY(), X_OFFSET);
-    Pipe second = new Pipe(480 + 186, PointManager.getRandomY(), X_OFFSET);
-    Pipe third = new Pipe(480 + 186 + 186, PointManager.getRandomY(), X_OFFSET);
+    Pipe first = new Pipe(480, PointManager.getRandomY());
+    Pipe second = new Pipe(480 + 186, PointManager.getRandomY());
+    Pipe third = new Pipe(480 + 186 + 186, PointManager.getRandomY());
     first.setPrev(third);
     second.setPrev(first);
     third.setPrev(second);
@@ -39,47 +40,94 @@ public class Pipes {
     pipes.forEach(pipe -> pipe.render(g));
   }
 
+  public void reset() {
+    pipes.get(0).setX(480);
+    pipes.get(1).setX(480 + 186);
+    pipes.get(2).setX(480 + 186 + 186);
+
+    pipes.forEach(pipe -> pipe.setY(PointManager.getRandomY()));
+    pipes.forEach(Pipe::updateBounds);
+
+    score = 0;
+  }
+
+  public boolean checkCollision(List<Rectangle> player) {
+    return pipes.stream().anyMatch((p) -> p.checkCollision(player));
+  }
+
+  public int getScore() {
+    return score;
+  }
+
   private class Pipe {
-    private BufferedImage image;
+    private final BufferedImage image;
     private float x;
     private int y;
-    private int width, height;
-    private Rectangle bounds;
-    private final float xOffset;
+    private List<Rectangle> bounds;
     private Pipe prev;
+    private boolean stocked;
 
-    public Pipe(int x, int y, float xOffset) {
+    public Pipe(int x, int y) {
       image = Assets.pipes;
       this.x = x;
       this.y = y;
-      width = WIDTH;
-      height = HEIGHT;
-      bounds = new Rectangle(x, y + 240, 39, 135);
-      this.xOffset = xOffset;
+      bounds = new ArrayList<>() {{
+        add(new Rectangle(x, y, WIDTH, 240));
+        add(new Rectangle(x, y + 378, WIDTH, 240));
+      }};
+
     }
 
     public void tick() {
-      x -= xOffset;
-      bounds.x = (int) x;
-      if (x + width <= 0) {
+      x -= X_OFFSET;
+      bounds.forEach((b) -> b.x = (int) x);
+      if (x + WIDTH <= 0) {
         x = prev.getX() + 186;
-        bounds.x = (int) x;
+        bounds.forEach((b) -> b.x = (int) x);
         y = PointManager.getRandomY();
-        bounds.y = y;
+        bounds.get(0).y = y;
+        bounds.get(1).y = y + 378;
+        stocked = false;
+        return;
+      }
+      if (x < 95 && !stocked) {
+        score++;
+        stocked = true;
       }
 
     }
 
     public void render(Graphics g) {
-      g.drawImage(image, (int) x, y, width, height, null);
+      g.drawImage(image, (int) x, y, WIDTH, HEIGHT, null);
     }
 
     public float getX() {
       return x;
     }
 
+    public void setX(float x) {
+      this.x = x;
+    }
+
+    public void setY(int y) {
+      this.y = y;
+    }
+
     public void setPrev(Pipe prev) {
       this.prev = prev;
+    }
+
+    public boolean checkCollision(List<Rectangle> player) {
+      boolean up = player.stream().anyMatch((b) -> b.intersects(bounds.get(0)));
+      boolean down = player.stream().anyMatch((b) -> b.intersects(bounds.get(1)));
+      return up || down;
+    }
+
+    private void updateBounds() {
+      bounds = new ArrayList<>() {{
+        add(new Rectangle((int) x, y, WIDTH, 240));
+        add(new Rectangle((int) x, y + 378, WIDTH, 240));
+      }};
     }
   }
 }
